@@ -163,8 +163,7 @@ _All flags below are collapsible for readability._
 <summary id="-flag-9">🚩 <strong>Flag 9: <Technique Name></strong></summary>
 	
 ---
-
-<details>	
+	
 <summary id="-flag-10">🚩 <strong>Flag 10: <Technique Name></strong></summary>
 	
 ---
