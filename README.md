@@ -44,7 +44,6 @@ The evidence is here. The question is whether you’ll see through the story or 
 ## 📚 Table of Contents
 
 - [🧠 Preparation](#-Preparation)
-- [🧬 MITRE ATT&CK Summary](#-mitre-attck-summary)
 - [🔍 Flag Analysis](#-flag-analysis)
   - [🚩 Flag 1](#-flag-1)
   - [🚩 Flag 2](#-flag-2)
@@ -66,6 +65,7 @@ The evidence is here. The question is whether you’ll see through the story or 
   - [🚩 Flag 18](#-flag-18)
   - [🚩 Flag 19](#-flag-19)
   - [🚩 Flag 20](#-flag-20)
+- [🧬 MITRE ATT&CK Summary](#-mitre-attck-summary)
 - [🚨 Detection Gaps & Recommendations](#-detection-gaps--recommendations)
 - [🧾 Final Assessment](#-final-assessment)
 - [📎 Analyst Notes](#-analyst-notes)
