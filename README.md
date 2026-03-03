@@ -127,37 +127,37 @@ _All flags below are collapsible for readability._
 	
 ---
 
-<details>	
+	
 <summary id="-flag-3">🚩 <strong>Flag 3: <Technique Name></strong></summary>
 	
 ---
 
-<details>	
+	
 <summary id="-flag-4">🚩 <strong>Flag 4: <Technique Name></strong></summary>
 	
 ---
 
-<details>	
+	
 <summary id="-flag-5">🚩 <strong>Flag 5: <Technique Name></strong></summary>
 	
 ---
 
-<details>	
+	
 <summary id="-flag-6">🚩 <strong>Flag 6: <Technique Name></strong></summary>
 	
 ---
 
-<details>	
+	
 <summary id="-flag-7">🚩 <strong>Flag 7: <Technique Name></strong></summary>
 	
 ---
 
-<details>	
+
 <summary id="-flag-8">🚩 <strong>Flag 8: <Technique Name></strong></summary>
 	
 ---
 
-<details>	
+	
 <summary id="-flag-9">🚩 <strong>Flag 9: <Technique Name></strong></summary>
 	
 ---
