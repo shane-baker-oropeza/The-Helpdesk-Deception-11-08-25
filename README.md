@@ -74,7 +74,8 @@ The evidence is here. The question is whether you’ll see through the story or 
 
 <img width="655" height="304" alt="image" src="https://github.com/user-attachments/assets/b1c16415-33c4-43fb-a771-b5595fb8b812" />
 
-<img width="650" height="140" alt="image" src="https://github.com/user-attachments/assets/1b112c27-6bf0-4346-a77a-abce35d8f262" />
+<img width="644" height="140" alt="image" src="https://github.com/user-attachments/assets/de5b5080-0279-4099-99fc-db3620b8673e" />
+
 
 ---
 
@@ -95,7 +96,20 @@ InitiatingProcessFileName, InitiatingProcessFolderPath, InitiatingProcessCommand
 - I decided to look at a specified timeframe that started on 2025-10-01 till 2025-10-15.
 - I looked for the keywords "desk", "help", "support" and "tool" in any of the file folders.
 - I projected specific columns that would narrow down the information given and help me to focus on specific areas.
+- I found the DeviceName gab-intern-vm and I also found the suspicious FileName Support_701.txt.
+
 ---
+
+<img width="1860" height="408" alt="image" src="https://github.com/user-attachments/assets/87485515-b1db-4cda-995c-bcd47fdd9667" />
+</p>
+
+- This allowed me to answer the starting question and allow me to proceed to the first flag.
+</p>
+
+
+<img width="650" height="140" alt="image" src="https://github.com/user-attachments/assets/1b112c27-6bf0-4346-a77a-abce35d8f262" />
+</p>
+
 
 ## 🔍 Flag Analysis
 
