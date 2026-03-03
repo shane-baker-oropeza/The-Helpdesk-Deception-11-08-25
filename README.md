@@ -16,7 +16,7 @@
 
 ## 📌 Scenario
 
-<A routine support request should have ended with a reset and reassurance. Instead, the so-called “help” left behind a trail of anomalies that don’t add up.
+A routine support request should have ended with a reset and reassurance. Instead, the so-called “help” left behind a trail of anomalies that don’t add up.
 
 What was framed as troubleshooting looked more like an audit of the system itself — probing, cataloging, leaving subtle traces in its wake. Actions chained together in suspicious sequence: first gaining a foothold, then expanding reach, then preparing to linger long after the session ended.
 
@@ -26,7 +26,7 @@ This wasn’t remote assistance. It was a misdirection.
 
 Your mission this time is to reconstruct the timeline, connect the scattered remnants of this “support session”, and decide what was legitimate, and what was staged.
 
-The evidence is here. The question is whether you’ll see through the story or believe it.>
+The evidence is here. The question is whether you’ll see through the story or believe it.
 
 ---
 
