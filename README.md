@@ -165,12 +165,12 @@ DeviceProcessEvents
 	
 ---
 
-	
+<details>	
 <summary id="-flag-3">🚩 <strong>Flag 3: <Technique Name></strong></summary>
 	
 ---
 
-	
+<details>	
 <summary id="-flag-4">🚩 <strong>Flag 4: <Technique Name></strong></summary>
 	
 ---
@@ -190,16 +190,17 @@ DeviceProcessEvents
 	
 ---
 
-
+<details>
 <summary id="-flag-8">🚩 <strong>Flag 8: <Technique Name></strong></summary>
 	
 ---
 
-	
+<details>	
 <summary id="-flag-9">🚩 <strong>Flag 9: <Technique Name></strong></summary>
 	
 ---
-	
+
+<details>	
 <summary id="-flag-10">🚩 <strong>Flag 10: <Technique Name></strong></summary>
 	
 ---
