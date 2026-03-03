@@ -80,6 +80,12 @@ The evidence is here. The question is whether you’ll see through the story or 
 
 ---
 
+### KQL Query Used
+
+```
+//---------------------------------------------------------
+
+```
 ## 🧬 MITRE ATT&CK Summary
 
 | Flag | Technique Category | MITRE ID | Priority |
