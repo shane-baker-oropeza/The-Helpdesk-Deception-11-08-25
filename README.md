@@ -71,7 +71,7 @@ The evidence is here. The question is whether you’ll see through the story or 
 
 ---
 
-## 🧠  Preparation
+## 🧠 Preparation
 
 <img width="655" height="304" alt="image" src="https://github.com/user-attachments/assets/b1c16415-33c4-43fb-a771-b5595fb8b812" />
 
