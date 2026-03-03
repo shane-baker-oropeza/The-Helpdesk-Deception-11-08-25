@@ -124,6 +124,8 @@ _All flags below are collapsible for readability._
 [Table of Contents](#table-of-contents)
 
 <img width="644" height="382" alt="image" src="https://github.com/user-attachments/assets/c5200be3-2446-41b8-b505-9a6f87da9547" />
+<img width="647" height="168" alt="image" src="https://github.com/user-attachments/assets/f8712f19-b257-471d-a4b7-9a68d2c9e203" />
+
 
 - Throughout the threat hunt, the table `DeviceProcessEvents` was very key in order to examine the logs.
 
