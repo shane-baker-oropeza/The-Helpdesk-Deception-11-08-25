@@ -121,6 +121,8 @@ _All flags below are collapsible for readability._
 
 <details>
 <summary id="-flag-1">🚩 <strong>Flag 1: <Technique Name></strong></summary>
+---
+<summary id="-flag-2">🚩 <strong>Flag 2: <Technique Name></strong></summary>
 
 # **Detection and Analysis**
 
