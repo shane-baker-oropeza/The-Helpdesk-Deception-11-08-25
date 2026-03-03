@@ -109,7 +109,7 @@ _All flags below are collapsible for readability._
 # Flag 1 - Initial Execution Detection  
 [Table of Contents](#table-of-contents)
 
-<img width="593" height="515" alt="image" src="https://github.com/user-attachments/assets/f13fbe06-37cb-423d-841a-77c07063faba" />
+<img width="644" height="382" alt="image" src="https://github.com/user-attachments/assets/c5200be3-2446-41b8-b505-9a6f87da9547" />
 
 - Throughout the threat hunt, the table `DeviceProcessEvents` was very key in order to examine the logs.
 
@@ -197,7 +197,8 @@ DeviceProcessEvents
 # Flag 1 - Initial Execution Detection  
 [Table of Contents](#table-of-contents)
 
-<img width="593" height="515" alt="image" src="https://github.com/user-attachments/assets/f13fbe06-37cb-423d-841a-77c07063faba" />
+<img width="644" height="382" alt="image" src="https://github.com/user-attachments/assets/c0bf5503-eacc-4376-8c9a-189e43231841" />
+
 
 - Throughout the threat hunt, the table `DeviceProcessEvents` was very key in order to examine the logs.
 
