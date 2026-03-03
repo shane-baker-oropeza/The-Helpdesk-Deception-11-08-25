@@ -28,13 +28,6 @@ Your mission this time is to reconstruct the timeline, connect the scattered rem
 
 The evidence is here. The question is whether you’ll see through the story or believe it.
 
----
-
-## 🎯 Hunt Objectives
-
-- Identify malicious activity across endpoints and network telemetry  
-- Correlate attacker behavior to MITRE ATT&CK techniques  
-- Document evidence, detection gaps, and response opportunities  
 
 ---
 
@@ -78,7 +71,7 @@ The evidence is here. The question is whether you’ll see through the story or 
 
 ---
 
-## 🧠 Hunt Overview
+## 🧠 Preparation
 
 <High-level narrative describing the attack lifecycle, key behaviors observed, and why this hunt matters.>
 
