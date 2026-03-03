@@ -122,6 +122,88 @@ _All flags below are collapsible for readability._
 <details>
 <summary id="-flag-1">🚩 <strong>Flag 1: <Technique Name></strong></summary>
 
+# **Detection and Analysis**
+
+# Flag 1 - Initial Execution Detection  
+[Table of Contents](#table-of-contents)
+
+<img width="593" height="515" alt="image" src="https://github.com/user-attachments/assets/f13fbe06-37cb-423d-841a-77c07063faba" />
+
+- Throughout the threat hunt, the table `DeviceProcessEvents` was very key in order to examine the logs.
+
+- For Flag 1, we're looking at Initial Execution Detection
+
+- When I read what to hunt and saw 'script', the first thing that came to mind was PowerShell and Command Prompt. Further on, the question asked 
+
+`"What was the first CLI (command line interface) parameter name used during the execution of the suspicious program?"`
+
+- After looking back and forth at was being asked of the flag and examining logs `"unusual execution"` was key in order to find this flag.
+
+- The earliest anomalous execution of powershell being executed was `2025-10-06T06:00:48.7549551Z`
+
+---------------------------------------------------
+### KQL Query Used
+```
+//---------------FLAG 1-----------------------
+DeviceProcessEvents
+| where DeviceName == "gab-intern-vm"
+| where AccountName == "g4bri3lintern"
+| where FileName == "powershell.exe"
+| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-31T23:59:59Z))
+| project TimeGenerated, ActionType, DeviceName, AccountName, FileName, FolderPath, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
+```
+
+<img width="2075" height="384" alt="image" src="https://github.com/user-attachments/assets/87d0806a-00b6-4c40-89f1-1ff60438bee9" />
+
+
+- Upon looking at the log activity for powershell executables we can see the first CLI parameter is set to `-ExecutionPolicy`.  First time it was executed was on October 6th, 2025 at 6:00:48 AM
+
+- This eventually occurred again for a powershell.exe process called `SupportTool.ps1` for `2025-10-09T12:22:27.6588913Z`
+
+
+---------------------------------------------------
+
+# **Detection and Analysis**
+
+# Flag 1 - Initial Execution Detection  
+[Table of Contents](#table-of-contents)
+
+<img width="593" height="515" alt="image" src="https://github.com/user-attachments/assets/f13fbe06-37cb-423d-841a-77c07063faba" />
+
+- Throughout the threat hunt, the table `DeviceProcessEvents` was very key in order to examine the logs.
+
+- For Flag 1, we're looking at Initial Execution Detection
+
+- When I read what to hunt and saw 'script', the first thing that came to mind was PowerShell and Command Prompt. Further on, the question asked 
+
+`"What was the first CLI (command line interface) parameter name used during the execution of the suspicious program?"`
+
+- After looking back and forth at was being asked of the flag and examining logs `"unusual execution"` was key in order to find this flag.
+
+- The earliest anomalous execution of powershell being executed was `2025-10-06T06:00:48.7549551Z`
+
+---------------------------------------------------
+### KQL Query Used
+```
+//---------------FLAG 1-----------------------
+DeviceProcessEvents
+| where DeviceName == "gab-intern-vm"
+| where AccountName == "g4bri3lintern"
+| where FileName == "powershell.exe"
+| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-31T23:59:59Z))
+| project TimeGenerated, ActionType, DeviceName, AccountName, FileName, FolderPath, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
+```
+
+<img width="2075" height="384" alt="image" src="https://github.com/user-attachments/assets/87d0806a-00b6-4c40-89f1-1ff60438bee9" />
+
+
+- Upon looking at the log activity for powershell executables we can see the first CLI parameter is set to `-ExecutionPolicy`.  First time it was executed was on October 6th, 2025 at 6:00:48 AM
+
+- This eventually occurred again for a powershell.exe process called `SupportTool.ps1` for `2025-10-09T12:22:27.6588913Z`
+
+
+---------------------------------------------------
+
 ### 🎯 Objective
 <What the attacker was trying to accomplish>
 
