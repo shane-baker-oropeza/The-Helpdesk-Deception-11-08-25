@@ -75,15 +75,19 @@ The evidence is here. The question is whether you’ll see through the story or 
 
 <img width="655" height="304" alt="image" src="https://github.com/user-attachments/assets/b1c16415-33c4-43fb-a771-b5595fb8b812" />
 
-
-<img width="655" height="151" alt="image" src="https://github.com/user-attachments/assets/a763f5e7-4426-4ee3-b02f-beaa98be81a5" />>
+<img width="650" height="140" alt="image" src="https://github.com/user-attachments/assets/1b112c27-6bf0-4346-a77a-abce35d8f262" />
 
 ---
 
 ### KQL Query Used
 
 ```
-//---------------------------------------------------------
+DeviceFileEvents
+| where TimeGenerated between (datetime(2025-10-01) .. datetime(2025-10-15))
+| where FileName has_any ("desk", "help", "support", "tool")
+| project TimeGenerated, ActionType, DeviceName, FileName, FolderPath, InitiatingProcessAccountDomain, 
+InitiatingProcessFileName, InitiatingProcessFolderPath, InitiatingProcessCommandLine
+| order by TimeGenerated desc
 
 ```
 ## 🧬 MITRE ATT&CK Summary
