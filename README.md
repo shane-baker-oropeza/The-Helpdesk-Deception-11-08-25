@@ -173,7 +173,7 @@ DeviceProcessEvents
 	
 ---
 
-</details>	
+<details>	
 <summary id="-flag-5">🚩 <strong>Flag 5: <Technique Name></strong></summary>
 	
 ---
