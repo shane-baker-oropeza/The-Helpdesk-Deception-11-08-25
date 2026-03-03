@@ -40,7 +40,7 @@ The evidence is here. The question is whether you’ll see through the story or 
 
 ## 🧭 Scope & Environment
 
-- **Environment:** <Placeholder>  
+- **Environment:**  Microsoft - Log Analytics Workspace (LAW - Cyber Range) 
 - **Data Sources:** <Placeholder>  
 - **Timeframe:** <YYYY-MM-DD → YYYY-MM-DD>  
 
