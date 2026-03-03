@@ -119,6 +119,7 @@ _All flags below are collapsible for readability._
 
 ---
 
+<details>
 <summary id="-flag-1">🚩 <strong>Flag 1: <Technique Name></strong></summary>
 
 # Flag 1 - Initial Execution Detection  
@@ -158,7 +159,8 @@ DeviceProcessEvents
 - This eventually occurred again for a powershell.exe process called `SupportTool.ps1` for `2025-10-09T12:22:27.6588913Z`
 	
 ---
-		
+
+<details>		
 <summary id="-flag-2">🚩 <strong>Flag 2: <Technique Name></strong></summary>
 	
 ---
