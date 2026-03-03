@@ -320,82 +320,14 @@ DeviceProcessEvents
 
 <img width="647" height="551" alt="image" src="https://github.com/user-attachments/assets/3dbc54c7-3132-4ed4-8601-b339dcc1483f" />
 
-# Table of Contents
-
-Detection and Analysis:
-- [🕵️Flag 1 - Initial Execution Detection](#flag-1---initial-execution-detection)
-- [🏰Flag 2 - Defense Disabling](#flag-2---defense-disabling)
-- [🔍Flag 3 - Quick Data Probe](#flag-3---quick-data-probe)
-- [👁️Flag 4 - Host Context Recon](#flag-4---host-context-recon)
-- [🗺️Flag 5 - Storage Surface Mapping](#flag-5---storage-surface-mapping)
-- [⇄  Flag 6 - Connectivity & Name Resolution Check](#flag-6---connectivity--name-resolution-check)
-- [👀Flag 7 - Interactive Session Discovery](#flag-7---interactive-session-discovery)
-- [📦Flag 8 - Runtime Application Inventory](#flag-8---runtime-application-inventory)
-- [🏠︎ Flag 9 - Privilege Surface Check](#flag-9---privilege-surface-check)
-- [↩Flag 10 - Proof-of-Access & Egress Validation](#flag-10---proof-of-access--egress-validation)
-- [📦Flag 11 - Bundling / Staging Artifacts](#flag-11---bundling--staging-artifacts)
-- [📬Flag 12 - Outbound Transfer Attempt](#flag-12---outbound-transfer-attempt)
-- [🕘Flag 13 - Scheduled Re-Execution Persistence](#flag-13---scheduled-re-execution-persistence)
-- [🌐Flag 14 - Autorun Fallback Persistence](#flag-14---autorun-fallback-persistence)
-- [🌿Flag 15 - Planted Narrative / Cover Artifact](#flag-15---planted-narrative--cover-artifact)
-- [✨Logical Flow & Analyst Reasoning](#logical-flow--analyst-reasoning)
-- [📜Final Notes / Findings](#final-notes--findings)
-
-MITRE ATT&CK Framework:
-- [🚩 Flags → MITRE ATT&CK Mapping Table](#flags--mitre-attck-mapping-table)
-- [🌍 Summary of ATT&CK Categories Used](#summary-of-attck-categories-used)
-
-Lessons Learned:
-- [🔒 1. Strengthen PowerShell Logging & Restrictions](#-1-strengthen-powershell-logging--restrictions)
-- [📁 2. Restrict Execution from User Download Folders](#-2-restrict-execution-from-user-download-folders)
-- [🔍 3. Harden Scheduled Task Abuse](#-3-harden-scheduled-task-abuse)
-- [🚫 4. Prevent Registry Run Key Persistence](#-4-prevent-registry-run-key-persistence)
-- [🌐 5. Improve Network Egress Controls](#-5-improve-network-egress-controls)
-- [🛡 6. Enable/Improve Endpoint Security Controls](#-6-enableimprove-endpoint-security-controls)
-- [🧩 7. Block Living-off-the-Land Binaries (LOLBins)](#-7-block-living-off-the-land-binaries-lolbins)
-- [🔐 8. Least Privilege Enforcement](#-8-least-privilege-enforcement)
-- [📦 9. User Education & Phishing Awareness](#-9-user-education--phishing-awareness)
-- [🧵 10. Improve SOC Detection Logic](#-10-improve-soc-detection-logic)
-- [🗂 11. File System Hardening](#-11-file-system-hardening)
-- [⭐ Top 5 Quick-Win Mitigations to Implement Immediately](#-top-5-quick-win-mitigations-to-implement-immediately)
 
 
----
-# Report By
 
-`**Date:** October 1st - 15th, 2025`  
-`**Analyst:** Grisham DelRosario`  
-`**Environment:** Microsoft - Log Analytics Workspace (LAW - Cyber Range)`  
-`**Attack Type:** Fake Remote Session/Malicious Help Desk`
 
 ---------------------------------------------------
 
-# **Scenario**
-`A routine support request should have ended with a reset and reassurance. Instead, the so- called "help" left behind a trail of anomalies that don't add up. What was framed as troubleshooting looked more like an audit of the system itself probing, cataloging, leaving subtle traces in its wake. Actions chained together in suspicious sequence: first gaining a foothold, then expanding reach, then preparing to linger long after the session ended. And just when the activity should have raised questions, a neat explanation appeared — a story planted in plain sight, designed to justify the very behavior that demanded scrutiny. This wasn't remote assistance. It was a misdirection. Your mission this time is to reconstruct the timeline, connect the scattered remnants of  this "support session", and decide what was legitimate, and what was staged. The evidence is here. The question is whether you'll see through the story or believe it.`
 
 ---------------------------------------------------
-# **Preparation**
-
-<img width="657" height="309" alt="image" src="https://github.com/user-attachments/assets/8942b8bf-b907-47bc-9334-ea9f6ffc6f16" />
-
-<img width="655" height="151" alt="image" src="https://github.com/user-attachments/assets/a763f5e7-4426-4ee3-b02f-beaa98be81a5" />
-
----------------------------------------------------
-### KQL Query Used
-
-```
-//---------------------------------------------------------
-let start = datetime(2025-10-01T00:00:00Z);
-let end   = datetime(2025-10-31T23:59:59Z);
-let keywords = dynamic(["desk", "help", "support", "tool"]);
-DeviceFileEvents
-| where TimeGenerated between (start .. end)
-| where FileName has_any (keywords)
-| project TimeGenerated, DeviceName, FileName, FolderPath,
-          InitiatingProcessAccountDomain, InitiatingProcessFolderPath, InitiatingProcessId,
-          InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
-| order by TimeGenerated desc
-```
 
 ---------------------------------------------------
 
@@ -442,41 +374,6 @@ DeviceFileEvents
 ---------------------------------------------------
 # **Detection and Analysis**
 
-# Flag 1 - Initial Execution Detection  
-[Table of Contents](#table-of-contents)
-
-<img width="593" height="515" alt="image" src="https://github.com/user-attachments/assets/f13fbe06-37cb-423d-841a-77c07063faba" />
-
-- Throughout the threat hunt, the table `DeviceProcessEvents` was very key in order to examine the logs.
-
-- For Flag 1, we're looking at Initial Execution Detection
-
-- When I read what to hunt and saw 'script', the first thing that came to mind was PowerShell and Command Prompt. Further on, the question asked 
-
-`"What was the first CLI (command line interface) parameter name used during the execution of the suspicious program?"`
-
-- After looking back and forth at was being asked of the flag and examining logs `"unusual execution"` was key in order to find this flag.
-
-- The earliest anomalous execution of powershell being executed was `2025-10-06T06:00:48.7549551Z`
-
----------------------------------------------------
-### KQL Query Used
-```
-//---------------FLAG 1-----------------------
-DeviceProcessEvents
-| where DeviceName == "gab-intern-vm"
-| where AccountName == "g4bri3lintern"
-| where FileName == "powershell.exe"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-31T23:59:59Z))
-| project TimeGenerated, ActionType, DeviceName, AccountName, FileName, FolderPath, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
-```
-
-<img width="2075" height="384" alt="image" src="https://github.com/user-attachments/assets/87d0806a-00b6-4c40-89f1-1ff60438bee9" />
-
-
-- Upon looking at the log activity for powershell executables we can see the first CLI parameter is set to `-ExecutionPolicy`.  First time it was executed was on October 6th, 2025 at 6:00:48 AM
-
-- This eventually occurred again for a powershell.exe process called `SupportTool.ps1` for `2025-10-09T12:22:27.6588913Z`
 
 
 ---------------------------------------------------
