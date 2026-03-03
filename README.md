@@ -40,9 +40,10 @@ The evidence is here. The question is whether you’ll see through the story or 
 
 ## 🧭 Scope & Environment
 
-- **Environment:**  Microsoft - Log Analytics Workspace (LAW - Cyber Range) 
-- **Data Sources:** <Placeholder>  
-- **Timeframe:** <YYYY-MM-DD → YYYY-MM-DD>  
+- **Analyst:**  Shane Baker-Oropeza 
+- **Environment:**  Microsoft - Log Analytics Workspace (LAW - Cyber Range)  
+- **Timeframe:**  2025-10-01 → 2025-10-15
+- **Attack Type:** Fake Remote Session/Malicious Help Desk
 
 ---
 
