@@ -178,12 +178,12 @@ DeviceProcessEvents
 	
 ---
 
-	
+<details>	
 <summary id="-flag-6">🚩 <strong>Flag 6: <Technique Name></strong></summary>
 	
 ---
 
-	
+<details>	
 <summary id="-flag-7">🚩 <strong>Flag 7: <Technique Name></strong></summary>
 	
 ---
