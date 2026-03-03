@@ -83,6 +83,8 @@ The evidence is here. The question is whether you’ll see through the story or 
 ### KQL Query Used
 
 ```
+let start = datetime(2025-10-01);
+let end   = datetime(2025-10-15);
 DeviceFileEvents
 | where TimeGenerated between (datetime(2025-10-01) .. datetime(2025-10-15))
 | where FileName has_any ("desk", "help", "support", "tool")
@@ -91,31 +93,10 @@ InitiatingProcessFileName, InitiatingProcessFolderPath, InitiatingProcessCommand
 | order by TimeGenerated desc
 
 ```
-## 🧬 MITRE ATT&CK Summary
-
-| Flag | Technique Category | MITRE ID | Priority |
-|-----:|-------------------|----------|----------|
-| 1 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 2 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 3 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 4 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 5 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 6 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 7 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 8 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 9 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 10 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 11 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 12 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 13 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 14 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 15 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 16 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 17 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 18 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 19 | <Placeholder> | <Placeholder> | <Placeholder> |
-| 20 | <Placeholder> | <Placeholder> | <Placeholder> |
-
+- I decided to look in DeviceFileEvents since there were indications that malicious activity was originating from the Downloads folders.
+- I decided to look at a specified timeframe that started on 2025-10-01 till 2025-10-15.
+- I looked for the keywords "desk", "help", "support" and "tool" in any of the file folders.
+- I projected specific columns that would narrow down the information given and help me to focus on specific areas.
 ---
 
 ## 🔍 Flag Analysis
@@ -289,6 +270,33 @@ DeviceProcessEvents
 ---
 
 <!-- Duplicate Flag 1 section for Flags 2–20 -->
+
+---
+
+## 🧬 MITRE ATT&CK Summary
+
+| Flag | Technique Category | MITRE ID | Priority |
+|-----:|-------------------|----------|----------|
+| 1 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 2 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 3 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 4 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 5 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 6 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 7 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 8 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 9 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 10 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 11 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 12 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 13 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 14 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 15 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 16 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 17 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 18 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 19 | <Placeholder> | <Placeholder> | <Placeholder> |
+| 20 | <Placeholder> | <Placeholder> | <Placeholder> |
 
 ---
 
