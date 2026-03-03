@@ -139,7 +139,6 @@ _All flags below are collapsible for readability._
 
 - The earliest anomalous execution of powershell being executed was `2025-10-06T06:00:48.7549551Z`
 
----------------------------------------------------
 ### KQL Query Used
 ```
 //---------------FLAG 1-----------------------
@@ -150,6 +149,9 @@ DeviceProcessEvents
 | where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-31T23:59:59Z))
 | project TimeGenerated, ActionType, DeviceName, AccountName, FileName, FolderPath, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
 ```
+
+---------------------------------------------------
+
 
 <img width="2075" height="384" alt="image" src="https://github.com/user-attachments/assets/87d0806a-00b6-4c40-89f1-1ff60438bee9" />
 
