@@ -10,7 +10,8 @@
 
 
 
-# 🛡️ Threat Hunt Report – <Hunt Name>
+# 🛡️ Threat Hunt Report – The-Helpdesk-Deception-11-08-25
+
 
 ---
 
