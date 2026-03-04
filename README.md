@@ -179,55 +179,43 @@ DeviceProcessEvents
 
 ----------------------------------------------------------------------
 
-- Further on, I decided to pivot back into `DeviceProcessEvents` table and look back into more power shell activity.
+- I decided to use the `DeviceFileEvents` table since I was looking for a file related to the exploit.
 
-- I kept noticing this command scrolling through the logs and noticed the string when querying for  `Artifact` and `Out-File -FilePath 'C:\Users\Public\DefenderTamperArtifact.txt'`
+- I looked for any files containing the word Artifact in the `FileName` column.
 
-- The query used in Flag 1 to understand the CLI parameter `-ExecutionPolicy`, was key into understanding the timeline of events that showed another powershell command outputting a file called `DefenderTamperArtifact.txt`
-
-- As I kept querying for the term artifact and I kept on encountering the file name `ReconArtifacts.zip.`
-
-- It was the closest thing I can find but it was not the official tampered artifact.
-
-- Still needed to find something related to either this or the `DefenderTamperArtifact.txt` file. Somehow I knew these were related to Defense Disabling but could not make the linkage as to how it was all connected.
-
-<img width="2144" height="514" alt="image" src="https://github.com/user-attachments/assets/c910c494-6961-4dcc-9f2e-c6ce4407400b" />
-
-<img width="1448" height="219" alt="image" src="https://github.com/user-attachments/assets/708a3d33-4ba1-4454-a265-006bfc370ff6" />
-
-- I decided to check `DeviceFileEvents` table and query for `Artifact` in the `FileName` column.
 
 ---------------------------------------------------
 ### KQL Query Used
 ```
 //---------------FLAG 2-----------------------
 DeviceFileEvents
+| where TimeGenerated between (datetime(2025-10-01) .. datetime(2025-10-15)) 
 | where DeviceName == "gab-intern-vm"
-| where ActionType == "FileCreated"
 | where FileName contains "Artifact"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
-| project TimeGenerated, ActionType, DeviceName, FileName, InitiatingProcessCommandLine, InitiatingProcessFolderPath, InitiatingProcessParentFileName
+| project TimeGenerated, DeviceName, InitiatingProcessAccountName, ActionType, FileName, FolderPath, InitiatingProcessCommandLine, InitiatingProcessFileName 
+| order by TimeGenerated desc
 ```
 
-- For the query, I kept using `Artifact` and used this information to see if there was another file name related to the term.
 
-- I found `ReconArtifacts.zip` and then saw that there was a `DefenderTamperArtifact.lnk` file. 
+- I saw the filename `DefenderTamperArtifact.lnk` and believed this to be the file related to the exploit.
+  
+</p>
+  
+<img width="1740" height="175" alt="image" src="https://github.com/user-attachments/assets/bcc95414-e44d-417b-a307-4ab80c5c0bd2" />
 
-- The timestamp matches with process creation from the `DeviceProcessEvents` table
+</p>
 
-- The  `.lnk`  file extension is a shortcut of the filename. Upon researching `.LNK` files, they are often the trigger for malicious scripts and  can be used for malicious purposes.
+- I was able to answer Flag 2 with the filename `DefenderTamperArtifact.lnk`.
+  
+</p>
 
+<img width="646" height="147" alt="image" src="https://github.com/user-attachments/assets/169db8cd-e2a2-4000-a1e9-bc1e4f53a3db" />
 
-<img width="1863" height="771" alt="image" src="https://github.com/user-attachments/assets/3a8b87d6-a9f5-4f7b-8a7b-5b2e6369bbf9" />
-
-<img width="1978" height="595" alt="image" src="https://github.com/user-attachments/assets/98852f93-905e-482f-8ab7-6a9cd60ea677" />
+</p>
 
 
 ---------------------------------------------------
 
-
-	
----
 
 
 <summary id="-flag-3">🚩 <strong>Flag 3: <Technique Name></strong></summary>
