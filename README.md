@@ -131,11 +131,11 @@ _All flags below are collapsible for readability._
 
 - For Flag 1 I was looking for the earliest anomalous execution.
 
-- When I read atypical script or interactive command activity, I started to think about Powershell. 
+- When I read atypical script or interactive command activity, I started to think about Powershell and added that as a query parameter.
+
+- I also was able to add the `AccountName` of `g4bri3lintern` as a new query parameter.
 
 `"What was the first CLI (command line interface) parameter name used during the execution of the suspicious program?"`
-
-- After looking back and forth at was being asked of the flag and examining logs `"unusual execution"` was key in order to find this flag.
 
 - The earliest anomalous execution of powershell being executed was `2025-10-06T06:00:48.7549551Z`
 
@@ -155,9 +155,11 @@ DeviceProcessEvents
 <img width="1842" height="351" alt="image" src="https://github.com/user-attachments/assets/ce9d4aab-438b-40d0-b68e-2927f1b9cbfa" />
 
 
-- Upon looking at the log activity for powershell executables we can see the first CLI parameter is set to `-ExecutionPolicy`.  First time it was executed was on October 6th, 2025 at 6:00:48 AM
+- After looking at the log activity for powershell executables I saw the first CLI parameter was set to `-ExecutionPolicy`.  
 
-- This eventually occurred again for a powershell.exe process called `SupportTool.ps1` for `2025-10-09T12:22:27.6588913Z`
+- This also occurred for a powershell.exe process called `SupportTool.ps1` on `2025-10-09T12:22:27.6588913Z`
+
+- I was able to answer Flag 1 with the CLI parameter.
 
 <img width="646" height="165" alt="Screenshot 2026-03-03 231743" src="https://github.com/user-attachments/assets/00c1500b-5181-4884-9455-3f6c1038f282" />
 
