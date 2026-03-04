@@ -227,24 +227,10 @@ DeviceFileEvents
 
 
 
-- For this flag I imagined the command value had something to do with copy and paste actions as it is a common short-lived action.
+- For this flag I looked under the `DeviceFileEvents` table.
 
-- The other part to this was the term `query`
+- I decided to check the `InitiateProcessCommandLine` column for any mention of the word `clip`.
 
-- I decided to check the `InitiateProcessCommandLine` column and find syntax and flags that looked like it was written as a query.
-
-- Upon looking I kept my focus on the timeline of the script and tried to match up the time .
-
-- The `InitiatingProcessCommandLine` showed this command below when querying for `'clip'`
-
-The Answer:
-
-`"powershell.exe" -NoProfile -Sta -Command "try { Get-Clipboard | Out-Null }    catch { }"` 
-
-
-- This specific activity related to `powershell` has the syntax for a query such as 
-
-`"try { Get-Clipboard | Out-Null } catch { }"`
 
 ---------------------------------------------------
 
@@ -254,13 +240,28 @@ The Answer:
 ```
 //---------------FLAG 3-----------------------
 DeviceFileEvents
+| where TimeGenerated between (datetime(2025-10-01) .. datetime(2025-10-15)) 
 | where DeviceName == "gab-intern-vm"
 | where InitiatingProcessCommandLine contains "clip"
-| where TimeGenerated between (datetime(2025-10-09T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
-| project TimeGenerated, ActionType, DeviceName, FileName, FolderPath, InitiatingProcessCommandLine, InitiatingProcessFolderPath, InitiatingProcessFileName, InitiatingProcessParentFileName
+| project TimeGenerated, DeviceName, InitiatingProcessAccountName, ActionType, FileName, FolderPath, InitiatingProcessCommandLine, InitiatingProcessFileName 
+| order by TimeGenerated desc
 ```
 
-<img width="1429" height="354" alt="image" src="https://github.com/user-attachments/assets/95c4faef-340d-47f3-b76d-2fb9694019c4" />
+- After querying for the results, I found the `InitiatingProcessCommandLine` that contained the script "powershell.exe" -NoProfile -Sta -Command "try { Get-Clipboard | Out-Null } catch { }"
+
+</p>
+
+<img width="1777" height="382" alt="image" src="https://github.com/user-attachments/assets/ca5f45d7-311c-4267-a6e9-7d265121b652" />
+
+</p>
+
+- I was able to answer Flag 3 with the script `"powershell.exe" -NoProfile -Sta -Command "try { Get-Clipboard | Out-Null } catch { }"`.
+
+</p>
+
+<img width="647" height="139" alt="image" src="https://github.com/user-attachments/assets/16230e50-bb3d-4d5c-bab2-369a653f3fd5" />
+
+</p>
 ---
 
 
