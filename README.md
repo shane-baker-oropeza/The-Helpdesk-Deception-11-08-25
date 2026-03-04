@@ -127,11 +127,11 @@ _All flags below are collapsible for readability._
 <img width="647" height="168" alt="image" src="https://github.com/user-attachments/assets/f8712f19-b257-471d-a4b7-9a68d2c9e203" />
 
 
-- Throughout the threat hunt, the table `DeviceProcessEvents` was very key in order to examine the logs.
+- I used the table `DeviceProcessEvents` in order to examine the logs.
 
-- For Flag 1, we're looking at Initial Execution Detection
+- For Flag 1 I was looking for the earliest anomalous execution.
 
-- When I read what to hunt and saw 'script', the first thing that came to mind was PowerShell and Command Prompt. Further on, the question asked 
+- When I read atypical script or interactive command activity, I started to think about Powershell. 
 
 `"What was the first CLI (command line interface) parameter name used during the execution of the suspicious program?"`
 
@@ -143,22 +143,24 @@ _All flags below are collapsible for readability._
 ```
 //---------------FLAG 1-----------------------
 DeviceProcessEvents
+| where TimeGenerated between (datetime(2025-10-01) .. datetime(2025-10-15)) 
 | where DeviceName == "gab-intern-vm"
 | where AccountName == "g4bri3lintern"
 | where FileName == "powershell.exe"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-31T23:59:59Z))
-| project TimeGenerated, ActionType, DeviceName, AccountName, FileName, FolderPath, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
+| project TimeGenerated, DeviceName, AccountName, ActionType, FileName, FolderPath, ProcessCommandLine, InitiatingProcessCommandLine, InitiatingProcessFileName 
 ```
 
 ---------------------------------------------------
 
-
-<img width="2075" height="384" alt="image" src="https://github.com/user-attachments/assets/87d0806a-00b6-4c40-89f1-1ff60438bee9" />
+<img width="1842" height="351" alt="image" src="https://github.com/user-attachments/assets/ce9d4aab-438b-40d0-b68e-2927f1b9cbfa" />
 
 
 - Upon looking at the log activity for powershell executables we can see the first CLI parameter is set to `-ExecutionPolicy`.  First time it was executed was on October 6th, 2025 at 6:00:48 AM
 
 - This eventually occurred again for a powershell.exe process called `SupportTool.ps1` for `2025-10-09T12:22:27.6588913Z`
+
+<img width="646" height="165" alt="Screenshot 2026-03-03 231743" src="https://github.com/user-attachments/assets/00c1500b-5181-4884-9455-3f6c1038f282" />
+
 	
 ---
 
