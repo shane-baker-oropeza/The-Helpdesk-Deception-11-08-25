@@ -174,7 +174,8 @@ DeviceProcessEvents
 # Flag 2 - Defense Disabling 
 [Table of Contents](#table-of-contents)
 
-<img width="663" height="519" alt="image" src="https://github.com/user-attachments/assets/59d134ae-2232-4d6a-8bd9-ba32fd18d0e3" />
+<img width="649" height="515" alt="image" src="https://github.com/user-attachments/assets/f7a2e02e-7e2c-422e-b685-6dd506f9a365" />
+
 
 ----------------------------------------------------------------------
 
