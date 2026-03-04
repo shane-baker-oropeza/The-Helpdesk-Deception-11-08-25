@@ -120,6 +120,8 @@ _All flags below are collapsible for readability._
 
 <summary id="-flag-1">🚩 <strong>Flag 1: <Technique Name></strong></summary>
 
+# **Detection and Analysis**
+
 # Flag 1 - Initial Execution Detection  
 [Table of Contents](#table-of-contents)
 
@@ -168,12 +170,107 @@ DeviceProcessEvents
 
 		
 <summary id="-flag-2">🚩 <strong>Flag 2: <Technique Name></strong></summary>
+
+# Flag 2 - Defense Disabling 
+[Table of Contents](#table-of-contents)
+
+<img width="663" height="519" alt="image" src="https://github.com/user-attachments/assets/59d134ae-2232-4d6a-8bd9-ba32fd18d0e3" />
+
+----------------------------------------------------------------------
+
+- Further on, I decided to pivot back into `DeviceProcessEvents` table and look back into more power shell activity.
+
+- I kept noticing this command scrolling through the logs and noticed the string when querying for  `Artifact` and `Out-File -FilePath 'C:\Users\Public\DefenderTamperArtifact.txt'`
+
+- The query used in Flag 1 to understand the CLI parameter `-ExecutionPolicy`, was key into understanding the timeline of events that showed another powershell command outputting a file called `DefenderTamperArtifact.txt`
+
+- As I kept querying for the term artifact and I kept on encountering the file name `ReconArtifacts.zip.`
+
+- It was the closest thing I can find but it was not the official tampered artifact.
+
+- Still needed to find something related to either this or the `DefenderTamperArtifact.txt` file. Somehow I knew these were related to Defense Disabling but could not make the linkage as to how it was all connected.
+
+<img width="2144" height="514" alt="image" src="https://github.com/user-attachments/assets/c910c494-6961-4dcc-9f2e-c6ce4407400b" />
+
+<img width="1448" height="219" alt="image" src="https://github.com/user-attachments/assets/708a3d33-4ba1-4454-a265-006bfc370ff6" />
+
+- I decided to check `DeviceFileEvents` table and query for `Artifact` in the `FileName` column.
+
+---------------------------------------------------
+### KQL Query Used
+```
+//---------------FLAG 2-----------------------
+DeviceFileEvents
+| where DeviceName == "gab-intern-vm"
+| where ActionType == "FileCreated"
+| where FileName contains "Artifact"
+| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
+| project TimeGenerated, ActionType, DeviceName, FileName, InitiatingProcessCommandLine, InitiatingProcessFolderPath, InitiatingProcessParentFileName
+```
+
+- For the query, I kept using `Artifact` and used this information to see if there was another file name related to the term.
+
+- I found `ReconArtifacts.zip` and then saw that there was a `DefenderTamperArtifact.lnk` file. 
+
+- The timestamp matches with process creation from the `DeviceProcessEvents` table
+
+- The  `.lnk`  file extension is a shortcut of the filename. Upon researching `.LNK` files, they are often the trigger for malicious scripts and  can be used for malicious purposes.
+
+
+<img width="1863" height="771" alt="image" src="https://github.com/user-attachments/assets/3a8b87d6-a9f5-4f7b-8a7b-5b2e6369bbf9" />
+
+<img width="1978" height="595" alt="image" src="https://github.com/user-attachments/assets/98852f93-905e-482f-8ab7-6a9cd60ea677" />
+
+
+---------------------------------------------------
+
+
 	
 ---
 
 
 <summary id="-flag-3">🚩 <strong>Flag 3: <Technique Name></strong></summary>
-	
+
+# Flag 3 - Quick Data Probe 
+[Table of Contents](#table-of-contents)
+
+<img width="605" height="519" alt="image" src="https://github.com/user-attachments/assets/87ce3e70-eaf9-4e99-9c58-e50ab8ae0637" />
+
+
+- For this flag I imagined the command value had something to do with copy and paste actions as it is a common short-lived action.
+
+- The other part to this was the term `query`
+
+- I decided to check the `InitiateProcessCommandLine` column and find syntax and flags that looked like it was written as a query.
+
+- Upon looking I kept my focus on the timeline of the script and tried to match up the time .
+
+- The `InitiatingProcessCommandLine` showed this command below when querying for `'clip'`
+
+The Answer:
+
+`"powershell.exe" -NoProfile -Sta -Command "try { Get-Clipboard | Out-Null }    catch { }"` 
+
+
+- This specific activity related to `powershell` has the syntax for a query such as 
+
+`"try { Get-Clipboard | Out-Null } catch { }"`
+
+---------------------------------------------------
+
+
+
+### KQL Query Used
+```
+//---------------FLAG 3-----------------------
+DeviceFileEvents
+| where DeviceName == "gab-intern-vm"
+| where InitiatingProcessCommandLine contains "clip"
+| where TimeGenerated between (datetime(2025-10-09T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
+| project TimeGenerated, ActionType, DeviceName, FileName, FolderPath, InitiatingProcessCommandLine, InitiatingProcessFolderPath, InitiatingProcessFileName, InitiatingProcessParentFileName
+```
+
+<img width="1429" height="354" alt="image" src="https://github.com/user-attachments/assets/95c4faef-340d-47f3-b76d-2fb9694019c4" />
 ---
 
 
@@ -214,47 +311,7 @@ DeviceProcessEvents
 
 ---------------------------------------------------
 
-# **Detection and Analysis**
 
-# Flag 1 - Initial Execution Detection  
-[Table of Contents](#table-of-contents)
-
-<img width="644" height="382" alt="image" src="https://github.com/user-attachments/assets/c0bf5503-eacc-4376-8c9a-189e43231841" />
-
-
-- Throughout the threat hunt, the table `DeviceProcessEvents` was very key in order to examine the logs.
-
-- For Flag 1, we're looking at Initial Execution Detection
-
-- When I read what to hunt and saw 'script', the first thing that came to mind was PowerShell and Command Prompt. Further on, the question asked 
-
-`"What was the first CLI (command line interface) parameter name used during the execution of the suspicious program?"`
-
-- After looking back and forth at was being asked of the flag and examining logs `"unusual execution"` was key in order to find this flag.
-
-- The earliest anomalous execution of powershell being executed was `2025-10-06T06:00:48.7549551Z`
-
----------------------------------------------------
-### KQL Query Used
-```
-//---------------FLAG 1-----------------------
-DeviceProcessEvents
-| where DeviceName == "gab-intern-vm"
-| where AccountName == "g4bri3lintern"
-| where FileName == "powershell.exe"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-31T23:59:59Z))
-| project TimeGenerated, ActionType, DeviceName, AccountName, FileName, FolderPath, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
-```
-
-<img width="2075" height="384" alt="image" src="https://github.com/user-attachments/assets/87d0806a-00b6-4c40-89f1-1ff60438bee9" />
-
-
-- Upon looking at the log activity for powershell executables we can see the first CLI parameter is set to `-ExecutionPolicy`.  First time it was executed was on October 6th, 2025 at 6:00:48 AM
-
-- This eventually occurred again for a powershell.exe process called `SupportTool.ps1` for `2025-10-09T12:22:27.6588913Z`
-
-
----------------------------------------------------
 
 ### 🎯 Objective
 <What the attacker was trying to accomplish>
@@ -362,27 +419,6 @@ DeviceProcessEvents
 
 
 ---------------------------------------------------
-
-
----------------------------------------------------
-
----------------------------------------------------
-
-1. Spawning process originating from the download folder. Occurred in the first half of October, so sometime between October 1st -15th?
-
-2. Similar executables, naming patterns, and other traits.
-
-3. Common keywords, `"desk", "help", "support", and "tool"`
-
-
-<img width="1450" height="575" alt="image" src="https://github.com/user-attachments/assets/f0c6c24a-97fd-4884-8613-8c23a803a964" />
-
-- In order to identify the most suspicious machine based on the given conditions I decided to set a variable called `'keywords'` with `"desk", "help", "support", and "tool"` in order to set up the query. 
-
-- First table I checked to start this hunt was `DeviceFileEvents.` 
-
-- The keyword `support` also allowed me to find this suspicious filename, `Support_701.txt` that was unusual as I was going through the logs but it allowed me to find the suspicious machine. I kept focus as it was mentioned at starting point several machines were found to share the same types of files - similar executables, naming patterns, and other traits -
----------------------------------------------------
 ### KQL Query Used
 ```
 //---------------------------------------------------------
@@ -415,96 +451,8 @@ DeviceFileEvents
 
 ---------------------------------------------------
 
-# Flag 2 - Defense Disabling 
-[Table of Contents](#table-of-contents)
-
-<img width="663" height="519" alt="image" src="https://github.com/user-attachments/assets/59d134ae-2232-4d6a-8bd9-ba32fd18d0e3" />
-
-----------------------------------------------------------------------
-
-- Further on, I decided to pivot back into `DeviceProcessEvents` table and look back into more power shell activity.
-
-- I kept noticing this command scrolling through the logs and noticed the string when querying for  `Artifact` and `Out-File -FilePath 'C:\Users\Public\DefenderTamperArtifact.txt'`
-
-- The query used in Flag 1 to understand the CLI parameter `-ExecutionPolicy`, was key into understanding the timeline of events that showed another powershell command outputting a file called `DefenderTamperArtifact.txt`
-
-- As I kept querying for the term artifact and I kept on encountering the file name `ReconArtifacts.zip.`
-
-- It was the closest thing I can find but it was not the official tampered artifact.
-
-- Still needed to find something related to either this or the `DefenderTamperArtifact.txt` file. Somehow I knew these were related to Defense Disabling but could not make the linkage as to how it was all connected.
-
-<img width="2144" height="514" alt="image" src="https://github.com/user-attachments/assets/c910c494-6961-4dcc-9f2e-c6ce4407400b" />
-
-<img width="1448" height="219" alt="image" src="https://github.com/user-attachments/assets/708a3d33-4ba1-4454-a265-006bfc370ff6" />
-
-- I decided to check `DeviceFileEvents` table and query for `Artifact` in the `FileName` column.
-
----------------------------------------------------
-### KQL Query Used
-```
-//---------------FLAG 2-----------------------
-DeviceFileEvents
-| where DeviceName == "gab-intern-vm"
-| where ActionType == "FileCreated"
-| where FileName contains "Artifact"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
-| project TimeGenerated, ActionType, DeviceName, FileName, InitiatingProcessCommandLine, InitiatingProcessFolderPath, InitiatingProcessParentFileName
-```
-
-- For the query, I kept using `Artifact` and used this information to see if there was another file name related to the term.
-
-- I found `ReconArtifacts.zip` and then saw that there was a `DefenderTamperArtifact.lnk` file. 
-
-- The timestamp matches with process creation from the `DeviceProcessEvents` table
-
-- The  `.lnk`  file extension is a shortcut of the filename. Upon researching `.LNK` files, they are often the trigger for malicious scripts and  can be used for malicious purposes.
 
 
-<img width="1863" height="771" alt="image" src="https://github.com/user-attachments/assets/3a8b87d6-a9f5-4f7b-8a7b-5b2e6369bbf9" />
-
-<img width="1978" height="595" alt="image" src="https://github.com/user-attachments/assets/98852f93-905e-482f-8ab7-6a9cd60ea677" />
-
-
----------------------------------------------------
-
-# Flag 3 - Quick Data Probe 
-[Table of Contents](#table-of-contents)
-
-<img width="605" height="519" alt="image" src="https://github.com/user-attachments/assets/87ce3e70-eaf9-4e99-9c58-e50ab8ae0637" />
-
-
-- For this flag I imagined the command value had something to do with copy and paste actions as it is a common short-lived action.
-
-- The other part to this was the term `query`
-
-- I decided to check the `InitiateProcessCommandLine` column and find syntax and flags that looked like it was written as a query.
-
-- Upon looking I kept my focus on the timeline of the script and tried to match up the time .
-
-- The `InitiatingProcessCommandLine` showed this command below when querying for `'clip'`
-
-The Answer:
-
-`"powershell.exe" -NoProfile -Sta -Command "try { Get-Clipboard | Out-Null }    catch { }"` 
-
-
-- This specific activity related to `powershell` has the syntax for a query such as 
-
-`"try { Get-Clipboard | Out-Null } catch { }"`
-
----------------------------------------------------
-### KQL Query Used
-```
-//---------------FLAG 3-----------------------
-DeviceFileEvents
-| where DeviceName == "gab-intern-vm"
-| where InitiatingProcessCommandLine contains "clip"
-| where TimeGenerated between (datetime(2025-10-09T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
-| project TimeGenerated, ActionType, DeviceName, FileName, FolderPath, InitiatingProcessCommandLine, InitiatingProcessFolderPath, InitiatingProcessFileName, InitiatingProcessParentFileName
-```
-
-<img width="1429" height="354" alt="image" src="https://github.com/user-attachments/assets/95c4faef-340d-47f3-b76d-2fb9694019c4" />
 
 ---------------------------------------------------
 
