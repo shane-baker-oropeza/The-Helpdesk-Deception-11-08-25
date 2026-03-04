@@ -152,7 +152,7 @@ DeviceProcessEvents
 | project TimeGenerated, DeviceName, AccountName, ActionType, FileName, FolderPath, ProcessCommandLine, InitiatingProcessCommandLine, InitiatingProcessFileName 
 ```
 
----------------------------------------------------
+
 
 <img width="1842" height="351" alt="image" src="https://github.com/user-attachments/assets/ce9d4aab-438b-40d0-b68e-2927f1b9cbfa" />
 
