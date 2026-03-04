@@ -117,7 +117,7 @@ _All flags below are collapsible for readability._
 
 ---
 
-<details>
+
 <summary id="-flag-1">🚩 <strong>Flag 1: <Technique Name></strong></summary>
 
 # **Detection and Analysis**
@@ -262,42 +262,103 @@ DeviceFileEvents
 <img width="647" height="139" alt="image" src="https://github.com/user-attachments/assets/16230e50-bb3d-4d5c-bab2-369a653f3fd5" />
 
 </p>
----
+---------------------------------------------------
 
 
 <summary id="-flag-4">🚩 <strong>Flag 4: <Technique Name></strong></summary>
-	
----
 
+# Flag 4 - Host Context Recon 
+[Table of Contents](#table-of-contents)
+
+<img width="660" height="510" alt="image" src="https://github.com/user-attachments/assets/bfaec963-a973-44e1-b905-5ee9395f2399" />
+
+
+- While going through the logs, and reading this flag I recall seeing an executable called ' qwinsta.exe ' I had to look up this program and it is a command on windows that can: `Display information about sessions on a Remote Desktop Session Host server`
+
+- This made sense in terms of gathering host and user context information.
+
+- Working within the timestamp of `2025-10-09T12:51:44.3425653Z` we can see that this was the last recon attempt for the query session for the attacker to enumerate.
+
+
+---------------------------------------------------
+### KQL Query Used
+
+```
+//---------------FLAG 4-----------------------
+DeviceProcessEvents
+| where DeviceName == "gab-intern-vm"
+| where AccountName == "g4bri3lintern"
+| where ProcessCommandLine contains "qwi"
+| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-20T23:59:59Z))
+| project TimeGenerated, AccountDomain, AccountName, ActionType, DeviceName, FileName, InitiatingProcessCommandLine, InitiatingProcessFileName
+```
+
+<img width="1855" height="84" alt="image" src="https://github.com/user-attachments/assets/4a85f06f-890f-4671-a5b7-0925eff8dcb9" />
+
+
+---------------------------------------------------
+	
 
 <summary id="-flag-5">🚩 <strong>Flag 5: <Technique Name></strong></summary>
+
+# Flag 5 - Storage Surface Mapping 
+[Table of Contents](#table-of-contents)
+
+<img width="677" height="503" alt="image" src="https://github.com/user-attachments/assets/823b8907-4acd-4922-a58e-9010bccace05" />
+
+
+- After looking at the `qwinsta.exe` process that was created in the logs.I noticed the command prompt executable that showed logical disk that comes after the `qwinsta.exe` executable.
+
+- This made sense in terms of data as to where it lives and the data that can be discovered such as 'storage'. 
+
+- Decided to search for 'WMIC.exe' command and found out that the 'logical disk' is `used to query Windows for information about a computer's local drives`. 
+
+- We can see the `TimeGenerated` column is still within 12:50:00 PM-12:51:00 PM.
+
+	- `Time Generated @ 2025-10-09T12:51:18.3848072Z`
+	- `"cmd.exe" /c wmic logicaldisk get name,freespace,size`
+
+---------------------------------------------------
+### KQL Query Used
+
+```
+//---------------FLAG 5-----------------------
+DeviceProcessEvents
+| where DeviceName == "gab-intern-vm"
+| where AccountName == "g4bri3lintern"
+| where FileName contains "cmd"
+| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-20T23:59:59Z))
+| project TimeGenerated, AccountDomain, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessCommandLine, InitiatingProcessFileName
+```
+
+<img width="1190" height="715" alt="image" src="https://github.com/user-attachments/assets/0d1966d1-68e4-4a74-9437-f87e71ca951b" />
+
 	
----
+---------------------------------------------------
 
 	
 <summary id="-flag-6">🚩 <strong>Flag 6: <Technique Name></strong></summary>
 	
----
+---------------------------------------------------
 
 	
 <summary id="-flag-7">🚩 <strong>Flag 7: <Technique Name></strong></summary>
 	
----
+---------------------------------------------------
 
 
 <summary id="-flag-8">🚩 <strong>Flag 8: <Technique Name></strong></summary>
 	
----
+---------------------------------------------------
 
 	
 <summary id="-flag-9">🚩 <strong>Flag 9: <Technique Name></strong></summary>
 	
----
+---------------------------------------------------
 
 
 <summary id="-flag-10">🚩 <strong>Flag 10: <Technique Name></strong></summary>
 	
----
 
 
 ---------------------------------------------------
@@ -409,34 +470,6 @@ DeviceFileEvents
 
 
 
----------------------------------------------------
-### KQL Query Used
-```
-//---------------------------------------------------------
-let start = datetime(2025-10-01T00:00:00Z);
-let end   = datetime(2025-10-31T23:59:59Z);
-let keywords = dynamic(["desk", "help", "support", "tool"]);
-DeviceFileEvents
-| where TimeGenerated between (start .. end)
-| where DeviceName == "gab-intern-vm"
-| where FileName has_any (keywords)
-| project TimeGenerated, DeviceName, FileName, FolderPath,
-          InitiatingProcessAccountDomain, InitiatingProcessFolderPath, InitiatingProcessId,
-          InitiatingProcessFileName, InitiatingProcessCommandLine, SHA1
-| order by TimeGenerated desc
-```
-
-
-- Ideally, another way I could have found this device without having to think so hard was to have queried the term 
-`Intern` for `DeviceName` in order to find the suspicious device, 
-`gab-intern-vm`
-- This too would have been an easier method to find in order to narrow down the suspicious device.
-
-<img width="1864" height="509" alt="image" src="https://github.com/user-attachments/assets/681a4d63-6f41-4598-82de-2ecb95c6332c" />
-
-
----------------------------------------------------
-# **Detection and Analysis**
 
 
 
@@ -444,71 +477,6 @@ DeviceFileEvents
 
 
 
-
----------------------------------------------------
-
-# Flag 4 - Host Context Recon 
-[Table of Contents](#table-of-contents)
-
-<img width="660" height="510" alt="image" src="https://github.com/user-attachments/assets/bfaec963-a973-44e1-b905-5ee9395f2399" />
-
-
-- While going through the logs, and reading this flag I recall seeing an executable called ' qwinsta.exe ' I had to look up this program and it is a command on windows that can: `Display information about sessions on a Remote Desktop Session Host server`
-
-- This made sense in terms of gathering host and user context information.
-
-- Working within the timestamp of `2025-10-09T12:51:44.3425653Z` we can see that this was the last recon attempt for the query session for the attacker to enumerate.
-
-
----------------------------------------------------
-### KQL Query Used
-
-```
-//---------------FLAG 4-----------------------
-DeviceProcessEvents
-| where DeviceName == "gab-intern-vm"
-| where AccountName == "g4bri3lintern"
-| where ProcessCommandLine contains "qwi"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-20T23:59:59Z))
-| project TimeGenerated, AccountDomain, AccountName, ActionType, DeviceName, FileName, InitiatingProcessCommandLine, InitiatingProcessFileName
-```
-
-<img width="1855" height="84" alt="image" src="https://github.com/user-attachments/assets/4a85f06f-890f-4671-a5b7-0925eff8dcb9" />
-
-
----------------------------------------------------
-
-# Flag 5 - Storage Surface Mapping 
-[Table of Contents](#table-of-contents)
-
-<img width="677" height="503" alt="image" src="https://github.com/user-attachments/assets/823b8907-4acd-4922-a58e-9010bccace05" />
-
-
-- After looking at the `qwinsta.exe` process that was created in the logs.I noticed the command prompt executable that showed logical disk that comes after the `qwinsta.exe` executable.
-
-- This made sense in terms of data as to where it lives and the data that can be discovered such as 'storage'. 
-
-- Decided to search for 'WMIC.exe' command and found out that the 'logical disk' is `used to query Windows for information about a computer's local drives`. 
-
-- We can see the `TimeGenerated` column is still within 12:50:00 PM-12:51:00 PM.
-
-	- `Time Generated @ 2025-10-09T12:51:18.3848072Z`
-	- `"cmd.exe" /c wmic logicaldisk get name,freespace,size`
-
----------------------------------------------------
-### KQL Query Used
-
-```
-//---------------FLAG 5-----------------------
-DeviceProcessEvents
-| where DeviceName == "gab-intern-vm"
-| where AccountName == "g4bri3lintern"
-| where FileName contains "cmd"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-20T23:59:59Z))
-| project TimeGenerated, AccountDomain, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessCommandLine, InitiatingProcessFileName
-```
-
-<img width="1190" height="715" alt="image" src="https://github.com/user-attachments/assets/0d1966d1-68e4-4a74-9437-f87e71ca951b" />
 
 
 
