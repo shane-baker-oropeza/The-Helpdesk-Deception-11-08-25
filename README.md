@@ -223,7 +223,8 @@ DeviceFileEvents
 # Flag 3 - Quick Data Probe 
 [Table of Contents](#table-of-contents)
 
-<img width="605" height="519" alt="image" src="https://github.com/user-attachments/assets/87ce3e70-eaf9-4e99-9c58-e50ab8ae0637" />
+<img width="650" height="555" alt="image" src="https://github.com/user-attachments/assets/5c7b7f54-5b1e-4d0f-b1e9-39513d2c6aaf" />
+
 
 
 - For this flag I imagined the command value had something to do with copy and paste actions as it is a common short-lived action.
