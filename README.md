@@ -166,7 +166,7 @@ DeviceProcessEvents
 <img width="646" height="165" alt="Screenshot 2026-03-03 231743" src="https://github.com/user-attachments/assets/00c1500b-5181-4884-9455-3f6c1038f282" />
 
 	
----
+---------------------------------------------------
 
 		
 <summary id="-flag-2">🚩 <strong>Flag 2: <Technique Name></strong></summary>
@@ -177,14 +177,14 @@ DeviceProcessEvents
 <img width="649" height="515" alt="image" src="https://github.com/user-attachments/assets/f7a2e02e-7e2c-422e-b685-6dd506f9a365" />
 
 
-----------------------------------------------------------------------
+
 
 - I decided to use the `DeviceFileEvents` table since I was looking for a file related to the exploit.
 
 - I looked for any files containing the word Artifact in the `FileName` column.
 
 
----------------------------------------------------
+
 ### KQL Query Used
 ```
 //---------------FLAG 2-----------------------
@@ -232,7 +232,7 @@ DeviceFileEvents
 - I decided to check the `InitiateProcessCommandLine` column for any mention of the word `clip`.
 
 
----------------------------------------------------
+
 
 
 
@@ -262,6 +262,7 @@ DeviceFileEvents
 <img width="647" height="139" alt="image" src="https://github.com/user-attachments/assets/16230e50-bb3d-4d5c-bab2-369a653f3fd5" />
 
 </p>
+
 ---------------------------------------------------
 
 
@@ -280,7 +281,7 @@ DeviceFileEvents
 - Working within the timestamp of `2025-10-09T12:51:44.3425653Z` we can see that this was the last recon attempt for the query session for the attacker to enumerate.
 
 
----------------------------------------------------
+
 ### KQL Query Used
 
 ```
@@ -318,7 +319,7 @@ DeviceProcessEvents
 	- `Time Generated @ 2025-10-09T12:51:18.3848072Z`
 	- `"cmd.exe" /c wmic logicaldisk get name,freespace,size`
 
----------------------------------------------------
+
 ### KQL Query Used
 
 ```
@@ -338,26 +339,204 @@ DeviceProcessEvents
 
 	
 <summary id="-flag-6">🚩 <strong>Flag 6: <Technique Name></strong></summary>
+
+# Flag 6 - Connectivity & Name Resolution Check 
+[Table of Contents](#table-of-contents)
+
+<img width="659" height="502" alt="image" src="https://github.com/user-attachments/assets/e6c62aa4-f755-4c5b-95cd-0683ea774d05" />
+
+- What was key to this question was network related events. Especially when it comes to DNS and outbound connections.
+
+- I decided to check the `InitiatingProcessParentFileName` column in the `DeviceNetworkEvents` table and try to narrow down unusual PowerShell activity.
+
+- I made sure to stay focused on October 9th 2025 during the time of `12:50-12:55 PM` as other events from `DeviceProcessEvents` and `DeviceFileEvents` were very important in relation to `SupportToolScript.ps1`. `Powershell` executables have been very prevalent throughout the hunt. 
+
+
+### KQL Query Used
+
+```
+//---------------FLAG 6-----------------------
+DeviceNetworkEvents
+| where DeviceName == "gab-intern-vm"
+| where ActionType == "ConnectionSuccess"
+| where InitiatingProcessFileName == "powershell.exe"
+| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-20T23:59:59Z))
+| project TimeGenerated, ActionType, InitiatingProcessFileName, InitiatingProcessFolderPath, InitiatingProcessId, InitiatingProcessParentFileName, Protocol, RemoteIP
+```
+
+<img width="2114" height="679" alt="image" src="https://github.com/user-attachments/assets/5abdd300-1878-4300-a79c-894ab1ab0bd8" />
+
 	
 ---------------------------------------------------
 
 	
 <summary id="-flag-7">🚩 <strong>Flag 7: <Technique Name></strong></summary>
+
+# Flag 7 - Interactive Session Discovery 
+[Table of Contents](#table-of-contents)
+
+<img width="661" height="467" alt="image" src="https://github.com/user-attachments/assets/ac36c23e-8e4a-4ece-a14f-3938832b6061" />
+
+
+`Keywords: Session, Initiate Process, Unique`
+
+- Had to get a little help with this one from another user without having to give away the answer and eventually I had a lightbulb moment.
+
+- It was actually really simple. When I read the question "What is the unique ID of the initiating process?" I kept focusing for the column `InitiatingProcessID`
+
+- I was so stumped that I feel the process identification task number was staring at me.  I had to pivot and got the hint from a user to project `InitiatingProcessUniqueId`
+
+- I should have considered the term `unique` in order to find the number of `InitiatingProcessUniqueId`
+
+	`2533274790397065`
+
+
+### KQL Query Used
+
+```
+//---------------FLAG 7-----------------------
+DeviceProcessEvents
+| where DeviceName == "gab-intern-vm"
+| where AccountName == "g4bri3lintern"
+| where TimeGenerated between (datetime(2025-10-09T00:00:00Z) .. datetime(2025-10-10T23:59:59Z))
+| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessUniqueId, ProcessId, InitiatingProcessId, InitiatingProcessCommandLine
+```
+
+<img width="2278" height="711" alt="image" src="https://github.com/user-attachments/assets/955a3d47-e687-433e-aa54-33abd7a9bc92" />
+
+
+```
+//---------------FLAG 7-----------------------
+DeviceProcessEvents
+| where DeviceName == "gab-intern-vm"
+| where AccountName == "g4bri3lintern"
+| where InitiatingProcessUniqueId == "2533274790397065"
+| where TimeGenerated between (datetime(2025-10-09T00:00:00Z) .. datetime(2025-10-10T23:59:59Z))
+| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessUniqueId, ProcessId, InitiatingProcessId, InitiatingProcessCommandLine
+```
+
+<img width="1962" height="483" alt="image" src="https://github.com/user-attachments/assets/56d4dfd4-4c65-4d5d-8a49-6b36a0bc5765" />
 	
 ---------------------------------------------------
 
 
 <summary id="-flag-8">🚩 <strong>Flag 8: <Technique Name></strong></summary>
+
+# Flag 8 - Runtime Application Inventory 
+[Table of Contents](#table-of-contents)
+
+<img width="663" height="546" alt="image" src="https://github.com/user-attachments/assets/89f36f9a-1f78-407f-bc8a-6b1dfc05fcc3" />
+
+They want the _file name_ of the process that shows:
+- `“runtime process enumeration”
+- `“process-list snapshots”
+- `“queries of running services”
+
+And the hint:
+1. `Task
+2. `List
+3. `Last
+
+This is pointing directly at:
+
+ **`tasklist.exe`**
+ 
+
+### KQL Query Used
+
+```
+//---------------FLAG 8-----------------------
+DeviceProcessEvents
+| where DeviceName == "gab-intern-vm"
+| where AccountName == "g4bri3lintern"
+| where ProcessCommandLine contains "tasklist"
+| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
+| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessUniqueId, InitiatingProcessId, InitiatingProcessParentId
+```
+
+<img width="1966" height="90" alt="image" src="https://github.com/user-attachments/assets/8c02e582-4206-4e10-a113-0e41902e4d42" />
 	
 ---------------------------------------------------
 
 	
 <summary id="-flag-9">🚩 <strong>Flag 9: <Technique Name></strong></summary>
+
+# Flag 9 - Privilege Surface Check 
+[Table of Contents](#table-of-contents)
+
+<img width="661" height="481" alt="image" src="https://github.com/user-attachments/assets/3a2938db-b2da-4917-8231-c763cb7314ae" />
+
+**Objective**
+> Detect attempts to understand privileges available to the current actor.
+
+This means: **we’re hunting for commands that ask “who am I?” or “what privileges do I have?”**
+
+**What to Hunt**
+> Queries of group membership, token properties, or privilege listings.
+
+That’s `whoami` territory.
+
+**Hint:**
+1. Who
+
+> **Identify the timestamp of the very first attempt.**
+    The timestamp of the earliest privilege-checking event.
+
+`TimeGenerated`
+`2025-10-09T12:52:14.3135459Z`
+
+
+### KQL Query Used
+
+```
+//---------------FLAG 9-----------------------
+DeviceProcessEvents
+| where DeviceName == "gab-intern-vm"
+| where AccountName == "g4bri3lintern"
+| where ProcessCommandLine contains "who"
+| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
+| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessUniqueId, InitiatingProcessId, InitiatingProcessParentId
+```
+
+<img width="1189" height="229" alt="image" src="https://github.com/user-attachments/assets/5af37ea0-29ff-48df-99a1-973891d8b14b" />
 	
 ---------------------------------------------------
 
 
 <summary id="-flag-10">🚩 <strong>Flag 10: <Technique Name></strong></summary>
+
+# Flag 10 - Proof-of-Access & Egress Validation 
+[Table of Contents](#table-of-contents)
+
+<img width="661" height="543" alt="image" src="https://github.com/user-attachments/assets/07da97ad-943d-4fa6-a665-c2722bf59a47" />
+
+Outbound Contact = Anything the host reaches OUT to
+
+In other words:
+- `DNS lookups
+- `HTTP(S) requests
+- `TCP/IP connections to external hosts
+- `Ping / ICMP echo requests
+- `Anything that leaves the VM and touches the internet or another host
+
+Defender logs this as `DeviceNetworkEvents.`
+	Decided to check the `RemoteUrl` column for outbound connections that were being tested with powershell.exe results below were the only existing domains to an unusual destination.
+
+
+### KQL Query Used
+
+```
+//---------------FLAG 10-----------------------
+DeviceNetworkEvents
+| where DeviceName == "gab-intern-vm"
+| where InitiatingProcessAccountName == "g4bri3lintern"
+| where InitiatingProcessFileName == "powershell.exe"
+| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
+| project TimeGenerated, ActionType, DeviceName, InitiatingProcessAccountName, InitiatingProcessCommandLine, InitiatingProcessFileName, RemoteIP, RemoteUrl, InitiatingProcessFolderPath, InitiatingProcessUniqueId
+| order by TimeGenerated asc
+```
+
+<img width="1586" height="117" alt="image" src="https://github.com/user-attachments/assets/ed079127-1942-4d24-a3f4-1d00ee82b28a" />
 	
 
 
@@ -472,201 +651,17 @@ DeviceProcessEvents
 
 
 
+---------------------------------------------------
+
+
 
 ---------------------------------------------------
 
 
 
-
-
-
 ---------------------------------------------------
 
-# Flag 6 - Connectivity & Name Resolution Check 
-[Table of Contents](#table-of-contents)
 
-<img width="659" height="502" alt="image" src="https://github.com/user-attachments/assets/e6c62aa4-f755-4c5b-95cd-0683ea774d05" />
-
-- What was key to this question was network related events. Especially when it comes to DNS and outbound connections.
-
-- I decided to check the `InitiatingProcessParentFileName` column in the `DeviceNetworkEvents` table and try to narrow down unusual PowerShell activity.
-
-- I made sure to stay focused on October 9th 2025 during the time of `12:50-12:55 PM` as other events from `DeviceProcessEvents` and `DeviceFileEvents` were very important in relation to `SupportToolScript.ps1`. `Powershell` executables have been very prevalent throughout the hunt. 
-
----------------------------------------------------
-### KQL Query Used
-
-```
-//---------------FLAG 6-----------------------
-DeviceNetworkEvents
-| where DeviceName == "gab-intern-vm"
-| where ActionType == "ConnectionSuccess"
-| where InitiatingProcessFileName == "powershell.exe"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-20T23:59:59Z))
-| project TimeGenerated, ActionType, InitiatingProcessFileName, InitiatingProcessFolderPath, InitiatingProcessId, InitiatingProcessParentFileName, Protocol, RemoteIP
-```
-
-<img width="2114" height="679" alt="image" src="https://github.com/user-attachments/assets/5abdd300-1878-4300-a79c-894ab1ab0bd8" />
-
-
----------------------------------------------------
-
-# Flag 7 - Interactive Session Discovery 
-[Table of Contents](#table-of-contents)
-
-<img width="661" height="467" alt="image" src="https://github.com/user-attachments/assets/ac36c23e-8e4a-4ece-a14f-3938832b6061" />
-
-
-`Keywords: Session, Initiate Process, Unique`
-
-- Had to get a little help with this one from another user without having to give away the answer and eventually I had a lightbulb moment.
-
-- It was actually really simple. When I read the question "What is the unique ID of the initiating process?" I kept focusing for the column `InitiatingProcessID`
-
-- I was so stumped that I feel the process identification task number was staring at me.  I had to pivot and got the hint from a user to project `InitiatingProcessUniqueId`
-
-- I should have considered the term `unique` in order to find the number of `InitiatingProcessUniqueId`
-
-	`2533274790397065`
-
----------------------------------------------------
-### KQL Query Used
-
-```
-//---------------FLAG 7-----------------------
-DeviceProcessEvents
-| where DeviceName == "gab-intern-vm"
-| where AccountName == "g4bri3lintern"
-| where TimeGenerated between (datetime(2025-10-09T00:00:00Z) .. datetime(2025-10-10T23:59:59Z))
-| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessUniqueId, ProcessId, InitiatingProcessId, InitiatingProcessCommandLine
-```
-
-<img width="2278" height="711" alt="image" src="https://github.com/user-attachments/assets/955a3d47-e687-433e-aa54-33abd7a9bc92" />
-
-
-```
-//---------------FLAG 7-----------------------
-DeviceProcessEvents
-| where DeviceName == "gab-intern-vm"
-| where AccountName == "g4bri3lintern"
-| where InitiatingProcessUniqueId == "2533274790397065"
-| where TimeGenerated between (datetime(2025-10-09T00:00:00Z) .. datetime(2025-10-10T23:59:59Z))
-| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessUniqueId, ProcessId, InitiatingProcessId, InitiatingProcessCommandLine
-```
-
-<img width="1962" height="483" alt="image" src="https://github.com/user-attachments/assets/56d4dfd4-4c65-4d5d-8a49-6b36a0bc5765" />
-
----------------------------------------------------
-
-# Flag 8 - Runtime Application Inventory 
-[Table of Contents](#table-of-contents)
-
-<img width="663" height="546" alt="image" src="https://github.com/user-attachments/assets/89f36f9a-1f78-407f-bc8a-6b1dfc05fcc3" />
-
-They want the _file name_ of the process that shows:
-- `“runtime process enumeration”
-- `“process-list snapshots”
-- `“queries of running services”
-
-And the hint:
-1. `Task
-2. `List
-3. `Last
-
-This is pointing directly at:
-
- **`tasklist.exe`**
- 
----------------------------------------------------
-### KQL Query Used
-
-```
-//---------------FLAG 8-----------------------
-DeviceProcessEvents
-| where DeviceName == "gab-intern-vm"
-| where AccountName == "g4bri3lintern"
-| where ProcessCommandLine contains "tasklist"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
-| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessUniqueId, InitiatingProcessId, InitiatingProcessParentId
-```
-
-<img width="1966" height="90" alt="image" src="https://github.com/user-attachments/assets/8c02e582-4206-4e10-a113-0e41902e4d42" />
-
----------------------------------------------------
-
-# Flag 9 - Privilege Surface Check 
-[Table of Contents](#table-of-contents)
-
-<img width="661" height="481" alt="image" src="https://github.com/user-attachments/assets/3a2938db-b2da-4917-8231-c763cb7314ae" />
-
-**Objective**
-> Detect attempts to understand privileges available to the current actor.
-
-This means: **we’re hunting for commands that ask “who am I?” or “what privileges do I have?”**
-
-**What to Hunt**
-> Queries of group membership, token properties, or privilege listings.
-
-That’s `whoami` territory.
-
-**Hint:**
-1. Who
-
-> **Identify the timestamp of the very first attempt.**
-    The timestamp of the earliest privilege-checking event.
-
-`TimeGenerated`
-`2025-10-09T12:52:14.3135459Z`
-
----------------------------------------------------
-### KQL Query Used
-
-```
-//---------------FLAG 9-----------------------
-DeviceProcessEvents
-| where DeviceName == "gab-intern-vm"
-| where AccountName == "g4bri3lintern"
-| where ProcessCommandLine contains "who"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
-| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessUniqueId, InitiatingProcessId, InitiatingProcessParentId
-```
-
-<img width="1189" height="229" alt="image" src="https://github.com/user-attachments/assets/5af37ea0-29ff-48df-99a1-973891d8b14b" />
-
----------------------------------------------------
-
-# Flag 10 - Proof-of-Access & Egress Validation 
-[Table of Contents](#table-of-contents)
-
-<img width="661" height="543" alt="image" src="https://github.com/user-attachments/assets/07da97ad-943d-4fa6-a665-c2722bf59a47" />
-
-Outbound Contact = Anything the host reaches OUT to
-
-In other words:
-- `DNS lookups
-- `HTTP(S) requests
-- `TCP/IP connections to external hosts
-- `Ping / ICMP echo requests
-- `Anything that leaves the VM and touches the internet or another host
-
-Defender logs this as `DeviceNetworkEvents.`
-	Decided to check the `RemoteUrl` column for outbound connections that were being tested with powershell.exe results below were the only existing domains to an unusual destination.
-
----------------------------------------------------
-### KQL Query Used
-
-```
-//---------------FLAG 10-----------------------
-DeviceNetworkEvents
-| where DeviceName == "gab-intern-vm"
-| where InitiatingProcessAccountName == "g4bri3lintern"
-| where InitiatingProcessFileName == "powershell.exe"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
-| project TimeGenerated, ActionType, DeviceName, InitiatingProcessAccountName, InitiatingProcessCommandLine, InitiatingProcessFileName, RemoteIP, RemoteUrl, InitiatingProcessFolderPath, InitiatingProcessUniqueId
-| order by TimeGenerated asc
-```
-
-<img width="1586" height="117" alt="image" src="https://github.com/user-attachments/assets/ed079127-1942-4d24-a3f4-1d00ee82b28a" />
 
 
 
