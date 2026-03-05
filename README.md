@@ -374,11 +374,13 @@ DeviceProcessEvents
 <img width="645" height="492" alt="image" src="https://github.com/user-attachments/assets/4c6fe7e5-536d-471b-968e-9036d82c3e6d" />
 
 
-- What was key to this question was network related events. Especially when it comes to DNS and outbound connections.
+- I decided to look under the `DeviceNetworkEvents` table since the clue had to do with network events.
 
-- I decided to check the `InitiatingProcessParentFileName` column in the `DeviceNetworkEvents` table and try to narrow down unusual PowerShell activity.
+- I started my search looking under the `InitiatingProcessParentFileName` column for filename that would answer the flag question.
 
-- I made sure to stay focused on October 9th 2025 during the time of `12:50-12:55 PM` as other events from `DeviceProcessEvents` and `DeviceFileEvents` were very important in relation to `SupportToolScript.ps1`. `Powershell` executables have been very prevalent throughout the hunt. 
+- Since the clue hinted at "session", I began to look for successful connections and included this `ActionType` in my query.
+
+- I made sure to stay focused on October 9th 2025 during the time of `12:50-1:00 PM` from the previous flag and try to narrow down unusual PowerShell activity.
 
 
 ### KQL Query Used
