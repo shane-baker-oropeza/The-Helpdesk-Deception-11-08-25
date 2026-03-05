@@ -316,19 +316,20 @@ DeviceProcessEvents
 # Flag 5 - Storage Surface Mapping 
 [Table of Contents](#table-of-contents)
 
-<img width="677" height="503" alt="image" src="https://github.com/user-attachments/assets/823b8907-4acd-4922-a58e-9010bccace05" />
+<img width="648" height="494" alt="image" src="https://github.com/user-attachments/assets/2ed24206-93e8-492d-ab82-cd4529cb0f5d" />
 
 
-- After looking at the `qwinsta.exe` process that was created in the logs.I noticed the command prompt executable that showed logical disk that comes after the `qwinsta.exe` executable.
+- I decide to look under the `DeviceProcessEvents` table to look for a command that had to deal with "storage".
 
-- This made sense in terms of data as to where it lives and the data that can be discovered such as 'storage'. 
+- Regarding the previous query, I noticed that the "cmd.exe" command was used in the `InitiatingProcessCommandLine`.
 
-- Decided to search for 'WMIC.exe' command and found out that the 'logical disk' is `used to query Windows for information about a computer's local drives`. 
+- I adjusted my search to look for `FileName` that contained "cmd".
+  
+- I noticed the `wmic` command included in the `ProcessCommandLine` along with 'logicaldisk` at 2025-10-09T12:51:18.3848072Z.
 
-- We can see the `TimeGenerated` column is still within 12:50:00 PM-12:51:00 PM.
+- `Wmic` is a legitimate Windows tool that attackers use to blend in with normal administrative activity and avoid detection by basic antivirus.
 
-	- `Time Generated @ 2025-10-09T12:51:18.3848072Z`
-	- `"cmd.exe" /c wmic logicaldisk get name,freespace,size`
+- "Logicaldisk` is used to query Windows for information about a computer's local drives.
 
 
 ### KQL Query Used
@@ -336,16 +337,32 @@ DeviceProcessEvents
 ```
 //---------------FLAG 5-----------------------
 DeviceProcessEvents
+| where TimeGenerated between (datetime(2025-10-01) .. datetime(2025-10-15)) 
 | where DeviceName == "gab-intern-vm"
 | where AccountName == "g4bri3lintern"
 | where FileName contains "cmd"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-20T23:59:59Z))
-| project TimeGenerated, AccountDomain, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessCommandLine, InitiatingProcessFileName
+| project TimeGenerated, DeviceName, AccountName, ActionType, FileName, FolderPath, ProcessCommandLine, InitiatingProcessCommandLine, InitiatingProcessFileName 
+| order by TimeGenerated desc
 ```
 
-<img width="1190" height="715" alt="image" src="https://github.com/user-attachments/assets/0d1966d1-68e4-4a74-9437-f87e71ca951b" />
+</p>
 
-	
+<img width="1773" height="458" alt="image" src="https://github.com/user-attachments/assets/bde3b3c5-08ae-4324-93eb-55505b51fc89" />
+
+</p>
+
+<img width="1780" height="440" alt="image" src="https://github.com/user-attachments/assets/95f04046-f3d1-4a0d-bf6c-30bd7ae5c4f6" />
+
+</p>
+
+- I was able to answer Flag 5 by using the `ProcessCommandLine` string `"cmd.exe" /c wmic logicaldisk get name,freespace,size`.
+
+</p>
+
+<img width="643" height="140" alt="image" src="https://github.com/user-attachments/assets/a8995cca-fd52-42ec-8b7b-e3e4dd8d96ad" />
+
+</p>
+
 ---------------------------------------------------
 
 	
