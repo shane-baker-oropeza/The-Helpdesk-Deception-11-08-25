@@ -371,7 +371,8 @@ DeviceProcessEvents
 # Flag 6 - Connectivity & Name Resolution Check 
 [Table of Contents](#table-of-contents)
 
-<img width="659" height="502" alt="image" src="https://github.com/user-attachments/assets/e6c62aa4-f755-4c5b-95cd-0683ea774d05" />
+<img width="645" height="492" alt="image" src="https://github.com/user-attachments/assets/4c6fe7e5-536d-471b-968e-9036d82c3e6d" />
+
 
 - What was key to this question was network related events. Especially when it comes to DNS and outbound connections.
 
