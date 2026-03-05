@@ -376,11 +376,13 @@ DeviceProcessEvents
 
 - I decided to look under the `DeviceNetworkEvents` table since the clue had to do with network events.
 
-- I started my search looking under the `InitiatingProcessParentFileName` column for filename that would answer the flag question.
+- I made sure to stay focused on October 9th 2025 during the time of `12:50-1:00 PM` from the previous flag activity. 
 
 - Since the clue hinted at "session", I began to look for successful connections and included this `ActionType` in my query.
 
-- I made sure to stay focused on October 9th 2025 during the time of `12:50-1:00 PM` from the previous flag and try to narrow down unusual PowerShell activity.
+- I started my search looking under the `InitiatingProcessParentFileName` column for filename that would answer the flag question.
+
+- I also narrowed down my search to focus on unusual PowerShell activity.
 
 
 ### KQL Query Used
