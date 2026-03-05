@@ -386,14 +386,16 @@ DeviceProcessEvents
 ```
 //---------------FLAG 6-----------------------
 DeviceNetworkEvents
+| where TimeGenerated between (datetime(2025-10-09 12:50) .. datetime(2025-10-09 13:00)) 
 | where DeviceName == "gab-intern-vm"
+| where InitiatingProcessAccountName == "g4bri3lintern"
 | where ActionType == "ConnectionSuccess"
-| where InitiatingProcessFileName == "powershell.exe"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-20T23:59:59Z))
-| project TimeGenerated, ActionType, InitiatingProcessFileName, InitiatingProcessFolderPath, InitiatingProcessId, InitiatingProcessParentFileName, Protocol, RemoteIP
+| project TimeGenerated, DeviceName, InitiatingProcessAccountName, ActionType, InitiatingProcessParentFileName, InitiatingProcessFileName, InitiatingProcessFolderPath, InitiatingProcessCommandLine, RemoteIP, RemotePort, Protocol
+| order by TimeGenerated desc
 ```
 
-<img width="2114" height="679" alt="image" src="https://github.com/user-attachments/assets/5abdd300-1878-4300-a79c-894ab1ab0bd8" />
+<img width="2104" height="455" alt="image" src="https://github.com/user-attachments/assets/46bc861e-0155-400f-aa75-0658bb8184ee" />
+
 
 	
 ---------------------------------------------------
