@@ -395,8 +395,20 @@ DeviceNetworkEvents
 | project TimeGenerated, DeviceName, InitiatingProcessAccountName, ActionType, InitiatingProcessParentFileName, InitiatingProcessFileName, InitiatingProcessFolderPath, InitiatingProcessCommandLine, RemoteIP, RemotePort, Protocol
 | order by TimeGenerated desc
 ```
+</p>
 
-<img width="2104" height="455" alt="image" src="https://github.com/user-attachments/assets/46bc861e-0155-400f-aa75-0658bb8184ee" />
+<img width="2087" height="268" alt="image" src="https://github.com/user-attachments/assets/97d3d16e-31cc-4e74-bbfa-72f71b7611d2" />
+
+</p>
+
+- I was able to answer Flag 6 by using the `InitiatingProcessParentFileName` of `RuntimeBroker.exe`.
+
+</p>
+
+<img width="647" height="140" alt="image" src="https://github.com/user-attachments/assets/4235502c-374b-4285-8d54-24a1c34f13f4" />
+
+</p>
+
 
 
 	
