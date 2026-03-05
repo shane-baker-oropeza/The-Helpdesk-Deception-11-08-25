@@ -275,12 +275,9 @@ DeviceFileEvents
 
 
 
-- While going through the logs, and reading this flag I recall seeing an executable called ' qwinsta.exe ' I had to look up this program and it is a command on windows that can: `Display information about sessions on a Remote Desktop Session Host server`
+- I started my search in the `DeviceProcessEvents` query table.
 
-- This made sense in terms of gathering host and user context information.
-
-- Working within the timestamp of `2025-10-09T12:51:44.3425653Z` we can see that this was the last recon attempt for the query session for the attacker to enumerate.
-
+- I added the query of `Filename` contains "qwi" to narrow down my search..
 
 
 ### KQL Query Used
@@ -299,7 +296,8 @@ DeviceProcessEvents
 
 </p>
 
-- I saw that there was a query session with the `FileName` of `qwinsta.exe`, which included the "qwi" that I was looking for.  
+- I saw that there was a query session with the `FileName` of `qwinsta.exe`, which included the "qwi" that I was looking for.
+
 - I was able to answer Flag 4 with the last recon attempt time using the `FileName` of `qwinsta.exe` at `2025-10-09T12:51:44.3425653Z`.
 
 </p>
