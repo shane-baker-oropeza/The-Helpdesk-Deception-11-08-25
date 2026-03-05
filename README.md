@@ -271,7 +271,8 @@ DeviceFileEvents
 # Flag 4 - Host Context Recon 
 [Table of Contents](#table-of-contents)
 
-<img width="660" height="510" alt="image" src="https://github.com/user-attachments/assets/bfaec963-a973-44e1-b905-5ee9395f2399" />
+<img width="647" height="492" alt="image" src="https://github.com/user-attachments/assets/de42c069-7646-4681-a4cb-c6340f5ce3ed" />
+
 
 
 - While going through the logs, and reading this flag I recall seeing an executable called ' qwinsta.exe ' I had to look up this program and it is a command on windows that can: `Display information about sessions on a Remote Desktop Session Host server`
@@ -287,14 +288,26 @@ DeviceFileEvents
 ```
 //---------------FLAG 4-----------------------
 DeviceProcessEvents
+| where TimeGenerated between (datetime(2025-10-01) .. datetime(2025-10-15)) 
 | where DeviceName == "gab-intern-vm"
 | where AccountName == "g4bri3lintern"
-| where ProcessCommandLine contains "qwi"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-20T23:59:59Z))
-| project TimeGenerated, AccountDomain, AccountName, ActionType, DeviceName, FileName, InitiatingProcessCommandLine, InitiatingProcessFileName
+| where FileName contains "qwi"
+| project TimeGenerated, DeviceName, AccountName, ActionType, FileName, FolderPath, ProcessCommandLine, InitiatingProcessCommandLine, InitiatingProcessFileName 
+| order by TimeGenerated desc
 ```
+<img width="1398" height="159" alt="image" src="https://github.com/user-attachments/assets/18b913be-edd4-42e4-a128-2ed9652d9d8e" />
 
-<img width="1855" height="84" alt="image" src="https://github.com/user-attachments/assets/4a85f06f-890f-4671-a5b7-0925eff8dcb9" />
+</p>
+
+- I saw that there was a query session with the `FileName` of `qwinsta.exe`, which included the "qwi" that I was looking for.  
+- I was able to answer Flag 4 with the last recon attempt time using the `FileName` of `qwinsta.exe` at `2025-10-09T12:51:44.3425653Z`.
+
+</p>
+
+<img width="640" height="141" alt="image" src="https://github.com/user-attachments/assets/3c6826e9-5d68-4d16-8764-504c22763a03" />
+
+</p>
+
 
 
 ---------------------------------------------------
