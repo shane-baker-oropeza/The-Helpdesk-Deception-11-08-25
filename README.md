@@ -419,47 +419,48 @@ DeviceNetworkEvents
 # Flag 7 - Interactive Session Discovery 
 [Table of Contents](#table-of-contents)
 
-<img width="661" height="467" alt="image" src="https://github.com/user-attachments/assets/ac36c23e-8e4a-4ece-a14f-3938832b6061" />
+<img width="648" height="456" alt="image" src="https://github.com/user-attachments/assets/47e89f1d-c073-498b-990c-f7bf6dd8d81f" />
 
 
-`Keywords: Session, Initiate Process, Unique`
+- Since this had to do with sessions, I used the `DeviceNetworkEvents` table to start my query.
 
-- Had to get a little help with this one from another user without having to give away the answer and eventually I had a lightbulb moment.
+- The question asked "What is the unique ID of the initiating process?", so I added the `InitiatingProcessUniqueId` to my query.
 
-- It was actually really simple. When I read the question "What is the unique ID of the initiating process?" I kept focusing for the column `InitiatingProcessID`
+- I kept all the rest of the fields and looked at the results from the previous flag.
 
-- I was so stumped that I feel the process identification task number was staring at me.  I had to pivot and got the hint from a user to project `InitiatingProcessUniqueId`
+</p>
 
-- I should have considered the term `unique` in order to find the number of `InitiatingProcessUniqueId`
+  <img width="2105" height="279" alt="image" src="https://github.com/user-attachments/assets/df38838e-1c32-4ec6-96b5-289aee09098f" />
 
-	`2533274790397065`
+
+
+
+
+
 
 
 ### KQL Query Used
 
 ```
 //---------------FLAG 7-----------------------
-DeviceProcessEvents
+DeviceNetworkEvents
+| where TimeGenerated between (datetime(2025-10-09 12:50) .. datetime(2025-10-09 13:00)) 
 | where DeviceName == "gab-intern-vm"
-| where AccountName == "g4bri3lintern"
-| where TimeGenerated between (datetime(2025-10-09T00:00:00Z) .. datetime(2025-10-10T23:59:59Z))
-| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessUniqueId, ProcessId, InitiatingProcessId, InitiatingProcessCommandLine
+| where InitiatingProcessAccountName == "g4bri3lintern"
+| where ActionType == "ConnectionSuccess"
+| project TimeGenerated, DeviceName, InitiatingProcessAccountName, ActionType, InitiatingProcessUniqueId, InitiatingProcessParentFileName, InitiatingProcessFileName, InitiatingProcessFolderPath, InitiatingProcessCommandLine, RemoteIP, RemotePort, Protocol
+| order by TimeGenerated desc
 ```
 
-<img width="2278" height="711" alt="image" src="https://github.com/user-attachments/assets/955a3d47-e687-433e-aa54-33abd7a9bc92" />
+</p>
 
+- I was able to answer this flag with the `InitiatingProcessUniqueId` of `2533274790397065`
 
-```
-//---------------FLAG 7-----------------------
-DeviceProcessEvents
-| where DeviceName == "gab-intern-vm"
-| where AccountName == "g4bri3lintern"
-| where InitiatingProcessUniqueId == "2533274790397065"
-| where TimeGenerated between (datetime(2025-10-09T00:00:00Z) .. datetime(2025-10-10T23:59:59Z))
-| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessUniqueId, ProcessId, InitiatingProcessId, InitiatingProcessCommandLine
-```
+</p>
 
-<img width="1962" height="483" alt="image" src="https://github.com/user-attachments/assets/56d4dfd4-4c65-4d5d-8a49-6b36a0bc5765" />
+<img width="643" height="142" alt="image" src="https://github.com/user-attachments/assets/e7ad9d88-e482-478d-8034-5bb009a42b8e" />
+
+</p>
 	
 ---------------------------------------------------
 
