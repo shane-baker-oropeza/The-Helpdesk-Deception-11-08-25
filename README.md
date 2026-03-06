@@ -430,15 +430,7 @@ DeviceNetworkEvents
 
 </p>
 
-  <img width="2105" height="279" alt="image" src="https://github.com/user-attachments/assets/df38838e-1c32-4ec6-96b5-289aee09098f" />
-
-
-
-
-
-
-
-
+ 
 ### KQL Query Used
 
 ```
@@ -451,6 +443,10 @@ DeviceNetworkEvents
 | project TimeGenerated, DeviceName, InitiatingProcessAccountName, ActionType, InitiatingProcessUniqueId, InitiatingProcessParentFileName, InitiatingProcessFileName, InitiatingProcessFolderPath, InitiatingProcessCommandLine, RemoteIP, RemotePort, Protocol
 | order by TimeGenerated desc
 ```
+
+</p>
+
+ <img width="2105" height="279" alt="image" src="https://github.com/user-attachments/assets/df38838e-1c32-4ec6-96b5-289aee09098f" />
 
 </p>
 
