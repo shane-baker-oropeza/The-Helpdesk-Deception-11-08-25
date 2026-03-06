@@ -446,7 +446,8 @@ DeviceNetworkEvents
 
 </p>
 
- <img width="2105" height="279" alt="image" src="https://github.com/user-attachments/assets/df38838e-1c32-4ec6-96b5-289aee09098f" />
+<img width="2104" height="261" alt="image" src="https://github.com/user-attachments/assets/950768d9-4464-457e-99e2-fcad4476f22c" />
+
 
 </p>
 
