@@ -472,12 +472,13 @@ DeviceNetworkEvents
 </p>
 
 - I started my search under `DeviceProcessEvents` since I was tasked with searching running applications and services.
-- I was given the following hints to conduct my search.
+- I was given the following hints to conduct my search:
 1. `Task
 2. `List
 3. `Last
 - I added the specific query of `Filename` contains "task"
 - This narrowed down my query results to 3 and I was able to easily see the pertinent `FileName` of `tasklist.exe`.
+
 
 </p>
 
