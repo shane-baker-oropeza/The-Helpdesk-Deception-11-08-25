@@ -526,7 +526,8 @@ DeviceProcessEvents
 
 - I then proceeded to the specific time of the very first attempt and found the timestamp of `2025-10-09T12:52:14.3135459Z`.
 
-`TimeGenerated`
+</p>
+
 
 
 
@@ -543,8 +544,15 @@ DeviceProcessEvents
 | order by TimeGenerated desc
 ```
 
+</p>
+
 <img width="2067" height="210" alt="image" src="https://github.com/user-attachments/assets/da1ed8a3-c7dd-47a0-ba08-34f333594878" />
 
+</p>
+
+- I was able to answer this flag with the timestamp of `2025-10-09T12:52:14.3135459Z`.
+
+</p>
 
 <img width="644" height="136" alt="image" src="https://github.com/user-attachments/assets/67caec1e-582d-457b-a7bd-8ce37bb2aa11" />
 
