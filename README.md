@@ -467,36 +467,45 @@ DeviceNetworkEvents
 # Flag 8 - Runtime Application Inventory 
 [Table of Contents](#table-of-contents)
 
-<img width="663" height="546" alt="image" src="https://github.com/user-attachments/assets/89f36f9a-1f78-407f-bc8a-6b1dfc05fcc3" />
+<img width="651" height="538" alt="image" src="https://github.com/user-attachments/assets/a3939a43-dc51-41ef-adf2-bb314475b069" />
 
-They want the _file name_ of the process that shows:
-- `“runtime process enumeration”
-- `“process-list snapshots”
-- `“queries of running services”
+</p>
 
-And the hint:
+- I started my search under `DeviceProcessEvents` since I was tasked with searching running applications and services.
+- I was given the following hints to conduct my search.
 1. `Task
 2. `List
 3. `Last
+- I added the specific query of `Filename` contains "task"
+- This narrowed down my query results to 3 and I was able to easily see the pertinent `FileName` of `tasklist.exe`.
 
-This is pointing directly at:
+</p>
 
- **`tasklist.exe`**
- 
+<img width="1774" height="170" alt="image" src="https://github.com/user-attachments/assets/4ef6e0c6-f3dc-4d7c-b240-45fb7f6bd60e" />
+
+ </p>
 
 ### KQL Query Used
 
 ```
 //---------------FLAG 8-----------------------
 DeviceProcessEvents
+| where TimeGenerated between (datetime(2025-10-09 12:50) .. datetime(2025-10-09 13:00))
 | where DeviceName == "gab-intern-vm"
 | where AccountName == "g4bri3lintern"
-| where ProcessCommandLine contains "tasklist"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
-| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessUniqueId, InitiatingProcessId, InitiatingProcessParentId
+| where FileName contains "task"
+| project TimeGenerated, DeviceName, AccountName, ActionType, FileName, FolderPath, ProcessCommandLine, InitiatingProcessCommandLine, InitiatingProcessFileName 
+| order by TimeGenerated desc
 ```
 
-<img width="1966" height="90" alt="image" src="https://github.com/user-attachments/assets/8c02e582-4206-4e10-a113-0e41902e4d42" />
+</p>
+
+- I was able to answer this flag with the `FileName` of `tasklist.exe`.
+
+</p>
+
+<img width="647" height="166" alt="image" src="https://github.com/user-attachments/assets/ce67fccd-73c4-4385-82b8-2c81ef44162f" />
+
 	
 ---------------------------------------------------
 
