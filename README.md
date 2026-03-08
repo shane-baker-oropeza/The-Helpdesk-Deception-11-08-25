@@ -516,7 +516,8 @@ DeviceProcessEvents
 # Flag 9 - Privilege Surface Check 
 [Table of Contents](#table-of-contents)
 
-<img width="661" height="481" alt="image" src="https://github.com/user-attachments/assets/3a2938db-b2da-4917-8231-c763cb7314ae" />
+<img width="647" height="476" alt="image" src="https://github.com/user-attachments/assets/2e406449-80f7-4516-8712-cb5491cdb453" />
+
 
 **Objective**
 > Detect attempts to understand privileges available to the current actor.
