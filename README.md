@@ -565,7 +565,8 @@ DeviceProcessEvents
 # Flag 10 - Proof-of-Access & Egress Validation 
 [Table of Contents](#table-of-contents)
 
-<img width="661" height="543" alt="image" src="https://github.com/user-attachments/assets/07da97ad-943d-4fa6-a665-c2722bf59a47" />
+<img width="648" height="534" alt="image" src="https://github.com/user-attachments/assets/56858f55-faa5-45ba-bf45-7b0ac5ad5584" />
+
 
 Outbound Contact = Anything the host reaches OUT to
 
