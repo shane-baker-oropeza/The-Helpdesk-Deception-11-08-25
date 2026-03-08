@@ -518,25 +518,16 @@ DeviceProcessEvents
 
 <img width="647" height="476" alt="image" src="https://github.com/user-attachments/assets/2e406449-80f7-4516-8712-cb5491cdb453" />
 
+- I continued to search under the `DeviceProcessEvents` table, but I added a couple of query strings to narrow it down.
 
-**Objective**
-> Detect attempts to understand privileges available to the current actor.
+- I added the `FileName` contains "who" and I also wanted the query to project the `InitiatingProcessCreationTime` column.
 
-This means: **we’re hunting for commands that ask “who am I?” or “what privileges do I have?”**
+- The `FileName` that was generated was `whoami.exe`.
 
-**What to Hunt**
-> Queries of group membership, token properties, or privilege listings.
-
-That’s `whoami` territory.
-
-**Hint:**
-1. Who
-
-> **Identify the timestamp of the very first attempt.**
-    The timestamp of the earliest privilege-checking event.
+- I then proceeded to the specific time of the very first attempt and found the timestamp of `2025-10-09T12:52:14.3135459Z`.
 
 `TimeGenerated`
-`2025-10-09T12:52:14.3135459Z`
+
 
 
 ### KQL Query Used
@@ -544,14 +535,19 @@ That’s `whoami` territory.
 ```
 //---------------FLAG 9-----------------------
 DeviceProcessEvents
+| where TimeGenerated between (datetime(2025-10-09 12:50) .. datetime(2025-10-15 13:00))
 | where DeviceName == "gab-intern-vm"
 | where AccountName == "g4bri3lintern"
-| where ProcessCommandLine contains "who"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
-| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessUniqueId, InitiatingProcessId, InitiatingProcessParentId
+| where FileName contains "who"
+| project TimeGenerated, DeviceName, AccountName, ActionType, FileName, FolderPath, ProcessCommandLine, InitiatingProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCreationTime
+| order by TimeGenerated desc
 ```
 
-<img width="1189" height="229" alt="image" src="https://github.com/user-attachments/assets/5af37ea0-29ff-48df-99a1-973891d8b14b" />
+<img width="2067" height="210" alt="image" src="https://github.com/user-attachments/assets/da1ed8a3-c7dd-47a0-ba08-34f333594878" />
+
+
+<img width="644" height="136" alt="image" src="https://github.com/user-attachments/assets/67caec1e-582d-457b-a7bd-8ce37bb2aa11" />
+
 	
 ---------------------------------------------------
 
