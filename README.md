@@ -707,10 +707,11 @@ DeviceNetworkEvents
 
 <img width="652" height="475" alt="image" src="https://github.com/user-attachments/assets/6aafbb84-b116-4a92-93ef-d799b5b68f8f" />
 
+- I started my search looking under the `DeviceProcessEvents` table since I was looking for a process or scheduler-related events.
+
+- I made sure I had the `InitiatingProcessFileName == "powershell.exe"` in my query.
 
 
-
-- The question asks for `task name`
 
 
 
@@ -719,21 +720,23 @@ DeviceNetworkEvents
 ```
 //---------------FLAG 13-----------------------
 DeviceProcessEvents
+| where TimeGenerated between (datetime(2025-10-09) .. datetime(2025-10-10))
 | where DeviceName == "gab-intern-vm"
 | where AccountName == "g4bri3lintern"
-| where InitiatingProcessUniqueId contains "2533274790397065"
-| where TimeGenerated between (datetime(2025-10-09T00:00:00Z) .. datetime(2025-10-10T23:59:59Z))
-| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName, InitiatingProcessUniqueId, InitiatingProcessId, InitiatingProcessParentId
-| order by TimeGenerated asc
+| where InitiatingProcessFileName == "powershell.exe"
+| project TimeGenerated, AccountName, ActionType, DeviceName, FileName, ProcessCommandLine, InitiatingProcessFileName
 ```
+- I noticed the "schtasks.exe" under the `FileName` column.
 
-<img width="2143" height="482" alt="image" src="https://github.com/user-attachments/assets/02ca3943-1b5b-4338-8a72-e336423fe802" />
+- I looked under the `ProcessCommandLine` and found the named of the task I was supposed to be looking for.
+
+<img width="2172" height="410" alt="image" src="https://github.com/user-attachments/assets/3652a1c9-413c-496a-b90c-4ca071d85281" />
+
+- I answered the flag with the task name of `SupportToolUpdater'.
+
+<img width="643" height="140" alt="image" src="https://github.com/user-attachments/assets/093ac785-9dc4-4fa5-b50f-5513d90fce3c" />
 
 
-
-- We can see in the output of `schtasks.exe` that the task name `/TN` flag is part of the process command line. 
-
-- We can see the value of the task name is `SupportToolUpdater`
 
 ---------------------------------------------------
 
