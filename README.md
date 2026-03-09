@@ -751,9 +751,14 @@ DeviceProcessEvents
 
 <img width="647" height="553" alt="image" src="https://github.com/user-attachments/assets/48a4dd89-d841-4a6c-a2d9-4fc00c25f98c" />
 
+</p>
 
+- The table `RemoteAssistUpdater` did not return anything.
 
-- The table `RemoteAssistUpdater` returned nothing. 
+</p>
+
+ <img width="641" height="137" alt="image" src="https://github.com/user-attachments/assets/551c2364-6e3b-46dc-be9a-49a50087342d" />
+
 
 
 ---------------------------------------------------
