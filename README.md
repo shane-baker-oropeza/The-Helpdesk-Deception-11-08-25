@@ -616,14 +616,6 @@ DeviceNetworkEvents
 
 - I added the `FileName` and `FolderPath` to my projected columns.
 
-- I saw that the "powershell.exe" was used for a `FileName` of `ReconArtifacts.zip`.
-
-</p>
-
-<img width="1685" height="345" alt="image" src="https://github.com/user-attachments/assets/488624a1-d3f7-44b7-84f9-a3065249b6de" />
-
-</p>
-
 
 ### KQL Query Used
 
@@ -636,6 +628,13 @@ DeviceFileEvents
 | project TimeGenerated, ActionType, DeviceName, InitiatingProcessAccountName, InitiatingProcessFileName, FileName, FolderPath
 | order by TimeGenerated desc
 ```
+</p>
+- I saw that the "powershell.exe" was used for a `FileName` of `ReconArtifacts.zip`.
+
+</p>
+
+<img width="1685" height="345" alt="image" src="https://github.com/user-attachments/assets/488624a1-d3f7-44b7-84f9-a3065249b6de" />
+
 </p>
 
 - I looked under the `FolderPath` for that log and found `C:\Users\Public\ReconArtifacts.zip`.
