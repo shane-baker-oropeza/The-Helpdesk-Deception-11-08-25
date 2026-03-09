@@ -768,7 +768,8 @@ DeviceProcessEvents
 # Flag 15 - Planted Narrative / Cover Artifact
 [Table of Contents](#table-of-contents)
 
-<img width="659" height="523" alt="image" src="https://github.com/user-attachments/assets/2a834215-ef61-46ec-afbd-1c895984cd43" />
+<img width="645" height="513" alt="image" src="https://github.com/user-attachments/assets/6716f36d-1d3e-4f69-953d-6f3fb592514d" />
+
 
 
 
