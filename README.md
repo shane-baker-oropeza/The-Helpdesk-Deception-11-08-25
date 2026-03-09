@@ -609,7 +609,8 @@ DeviceNetworkEvents
 # Flag 11 - Bundling / Staging Artifacts 
 [Table of Contents](#table-of-contents)
 
-<img width="650" height="515" alt="image" src="https://github.com/user-attachments/assets/d121712d-5a56-4949-bab5-de21e3561f48" />
+<img width="647" height="511" alt="image" src="https://github.com/user-attachments/assets/e9d02096-1752-47b1-9e98-08d289987efb" />
+
 
 
 Dropped at: 
