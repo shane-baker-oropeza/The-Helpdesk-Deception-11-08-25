@@ -58,11 +58,6 @@ The evidence is here. The question is whether you’ll see through the story or 
   - [🚩 Flag 13](#-flag-13)
   - [🚩 Flag 14](#-flag-14)
   - [🚩 Flag 15](#-flag-15)
-  - [🚩 Flag 16](#-flag-16)
-  - [🚩 Flag 17](#-flag-17)
-  - [🚩 Flag 18](#-flag-18)
-  - [🚩 Flag 19](#-flag-19)
-  - [🚩 Flag 20](#-flag-20)
 - [🧬 MITRE ATT&CK Summary](#-mitre-attck-summary)
 - [🚨 Detection Gaps & Recommendations](#-detection-gaps--recommendations)
 - [🧾 Final Assessment](#-final-assessment)
@@ -608,6 +603,8 @@ DeviceNetworkEvents
 	
 
 ---------------------------------------------------
+
+<summary id="-flag-11">🚩 <strong>Flag 11: <Technique Name></strong></summary>
 
 # Flag 11 - Bundling / Staging Artifacts 
 [Table of Contents](#table-of-contents)
