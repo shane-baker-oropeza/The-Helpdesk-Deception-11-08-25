@@ -749,7 +749,8 @@ DeviceProcessEvents
 # Flag 14 - Autorun Fallback Persistence
 [Table of Contents](#table-of-contents)
 
-<img width="648" height="559" alt="image" src="https://github.com/user-attachments/assets/daa04793-cfa7-4559-94e6-a7f1cd1acc60" />
+<img width="647" height="553" alt="image" src="https://github.com/user-attachments/assets/48a4dd89-d841-4a6c-a2d9-4fc00c25f98c" />
+
 
 
 - The table `RemoteAssistUpdater` returned nothing. 
