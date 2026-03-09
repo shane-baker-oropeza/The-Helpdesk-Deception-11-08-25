@@ -612,37 +612,42 @@ DeviceNetworkEvents
 <img width="647" height="511" alt="image" src="https://github.com/user-attachments/assets/e9d02096-1752-47b1-9e98-08d289987efb" />
 
 
+- I decide to search in the `DeviceFileEvents` table since I was tasked with looking for file system events or operations.
 
-Dropped at: 
+- I added the `FileName` and `FolderPath` to my projected columns.
 
-**`C:\Users\Public\ReconArtifacts.zip`**
+- I saw that the "powershell.exe" was used for a `FileName` of `ReconArtifacts.zip`.
 
-And the logs confirm it perfectly:
-- First created → **`12:58:17.436 PM`**, in _Public_
-- Then copied or moved → _Documents_
-- But they specifically ask for "first dropped", meaning the public directory.
+</p>
 
-Exactly the kind of staging behavior attackers love:
+<img width="1685" height="345" alt="image" src="https://github.com/user-attachments/assets/488624a1-d3f7-44b7-84f9-a3065249b6de" />
 
-- `Public is world-writable
-- `No elevation required
-- `No user desktop pop-ups
-- `Easy to exfiltrate quietly
+</p>
 
----------------------------------------------------
+
 ### KQL Query Used
 
 ```
 //---------------FLAG 11-----------------------
 DeviceFileEvents
+| where TimeGenerated between (datetime(2025-10-09 12:50) .. datetime(2025-10-09 13:00))
 | where DeviceName == "gab-intern-vm"
-| where FolderPath contains "artifact"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
-| project TimeGenerated, ActionType, DeviceName, FileName, FolderPath
-| order by TimeGenerated asc
+| where InitiatingProcessAccountName == "g4bri3lintern"
+| project TimeGenerated, ActionType, DeviceName, InitiatingProcessAccountName, InitiatingProcessFileName, FileName, FolderPath
+| order by TimeGenerated desc
 ```
+</p>
 
-<img width="1343" height="121" alt="image" src="https://github.com/user-attachments/assets/cfb6ee2f-f8f1-4309-b523-37b0043bb94f" />
+- I looked under the `FolderPath` for that log and found `C:\Users\Public\ReconArtifacts.zip`.
+
+- I was able to answer the flag with `C:\Users\Public\ReconArtifacts.zip`.
+
+</p>
+
+<img width="644" height="143" alt="image" src="https://github.com/user-attachments/assets/6ba19658-47d9-4057-908e-1fa74efa8626" />
+
+</p>
+
 
 ---------------------------------------------------
 
