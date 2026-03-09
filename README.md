@@ -570,7 +570,7 @@ DeviceProcessEvents
 
 - Since I was looking for evidence of outbound reachability, I started my search under the `DeviceNetworkEvents` table.
 
-- I was looking for successful connection attempts, so I added the `ActionType` == "ConnectionSuccess" query.
+- I was looking for successful connection attempts, so I added the `ActionType == "ConnectionSuccess"` query.
 
 - I also wanted to see the outbound destination, so I added the `RemoteUrl` column to the query.
 
