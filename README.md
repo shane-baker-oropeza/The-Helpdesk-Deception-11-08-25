@@ -655,15 +655,19 @@ DeviceFileEvents
 # Flag 12 - Outbound Transfer Attempt 
 [Table of Contents](#table-of-contents)
 
+</p>
 
 <img width="643" height="513" alt="image" src="https://github.com/user-attachments/assets/91fa3ebb-56fe-47bf-a1c6-831049195c28" />
 
+</p>
 
+- I started my search under the `DeviceNetworkEvents` table since I was looking for network events.
 
+- I added the `InitiatingProcessFileName == "powershell.exe"` to narrow down my search.
 
-- Recall the same query from Flag 10. The IP of the last unusual outbound connection was listed to a website called `httpbin.org` .
+- I also added the columns of `RemoteUrl` and `RemoteIp` to my query projection.
 
-- The `RemoteIP` column showed the IP, `100.29.147.161`, of the outbound connection
+</p>
 
 ---------------------------------------------------
 ### KQL Query Used
@@ -671,16 +675,28 @@ DeviceFileEvents
 ```
 //---------------FLAG 12-----------------------
 DeviceNetworkEvents
+| where TimeGenerated between (datetime(2025-10-09) .. datetime(2025-10-10))
 | where DeviceName == "gab-intern-vm"
 | where InitiatingProcessAccountName == "g4bri3lintern"
 | where InitiatingProcessFileName == "powershell.exe"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
-| project TimeGenerated, ActionType, DeviceName, InitiatingProcessAccountName, InitiatingProcessCommandLine, InitiatingProcessFileName, RemoteIP, RemoteUrl
-| order by TimeGenerated asc
+| project TimeGenerated, InitiatingProcessAccountName, ActionType, DeviceName, InitiatingProcessFileName, InitiatingProcessCommandLine, RemoteUrl, RemoteIP
+| order by TimeGenerated desc
 ```
 
-<img width="1564" height="118" alt="image" src="https://github.com/user-attachments/assets/898d9787-38a5-44c4-a660-2f68cf4c3172" />
+</p>
 
+<img width="1536" height="176" alt="image" src="https://github.com/user-attachments/assets/0272a638-7b02-4730-a09d-e5f34bcf9b52" />
+
+</p>
+
+- I was able to answer the flag with the `RemoteIP` of `100.29.147.161`.
+
+</p>
+
+<img width="643" height="141" alt="image" src="https://github.com/user-attachments/assets/138102c8-7670-4db5-9063-8d6619f64182" />
+
+
+</p>
 
 ---------------------------------------------------
 
