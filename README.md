@@ -732,7 +732,11 @@ DeviceProcessEvents
 
 <img width="2172" height="410" alt="image" src="https://github.com/user-attachments/assets/3652a1c9-413c-496a-b90c-4ca071d85281" />
 
+</p>
+
 - I answered the flag with the task name of `SupportToolUpdater'.
+
+</p>
 
 <img width="643" height="140" alt="image" src="https://github.com/user-attachments/assets/093ac785-9dc4-4fa5-b50f-5513d90fce3c" />
 
