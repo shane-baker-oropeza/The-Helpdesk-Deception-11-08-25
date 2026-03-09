@@ -544,7 +544,8 @@ DeviceProcessEvents
 
 </p>
 
-<img width="2067" height="210" alt="image" src="https://github.com/user-attachments/assets/da1ed8a3-c7dd-47a0-ba08-34f333594878" />
+<img width="2026" height="310" alt="image" src="https://github.com/user-attachments/assets/081dbca6-4b1b-467c-ab97-521a250490b2" />
+
 
 </p>
 
