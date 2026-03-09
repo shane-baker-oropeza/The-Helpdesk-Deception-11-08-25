@@ -564,36 +564,47 @@ DeviceProcessEvents
 # Flag 10 - Proof-of-Access & Egress Validation 
 [Table of Contents](#table-of-contents)
 
-<img width="648" height="534" alt="image" src="https://github.com/user-attachments/assets/56858f55-faa5-45ba-bf45-7b0ac5ad5584" />
+<img width="647" height="532" alt="image" src="https://github.com/user-attachments/assets/420e9f3b-eae2-4b79-94e6-26a768c9fa1f" />
 
 
-Outbound Contact = Anything the host reaches OUT to
 
-In other words:
-- `DNS lookups
-- `HTTP(S) requests
-- `TCP/IP connections to external hosts
-- `Ping / ICMP echo requests
-- `Anything that leaves the VM and touches the internet or another host
+- Since I was looking for evidence of outbound reachability, I started my search under the `DeviceNetworkEvents` table.
 
-Defender logs this as `DeviceNetworkEvents.`
-	Decided to check the `RemoteUrl` column for outbound connections that were being tested with powershell.exe results below were the only existing domains to an unusual destination.
+- I was looking for successful connection attempts, so I added the `ActionType` == "ConnectionSuccess" query.
 
+- I also wanted to see the outbound destination, so I added the `RemoteUrl` column to the query.
+
+</p>
 
 ### KQL Query Used
 
 ```
 //---------------FLAG 10-----------------------
 DeviceNetworkEvents
+| where TimeGenerated between (datetime(2025-10-09 12:50) .. datetime(2025-10-09 13:00))
 | where DeviceName == "gab-intern-vm"
 | where InitiatingProcessAccountName == "g4bri3lintern"
-| where InitiatingProcessFileName == "powershell.exe"
-| where TimeGenerated between (datetime(2025-10-01T00:00:00Z) .. datetime(2025-10-15T23:59:59Z))
-| project TimeGenerated, ActionType, DeviceName, InitiatingProcessAccountName, InitiatingProcessCommandLine, InitiatingProcessFileName, RemoteIP, RemoteUrl, InitiatingProcessFolderPath, InitiatingProcessUniqueId
-| order by TimeGenerated asc
+| where ActionType == "ConnectionSuccess"
+| project TimeGenerated, InitiatingProcessAccountName, ActionType, DeviceName, InitiatingProcessFileName, InitiatingProcessCommandLine, RemoteUrl
+| order by TimeGenerated desc
 ```
+</p>
 
-<img width="1586" height="117" alt="image" src="https://github.com/user-attachments/assets/ed079127-1942-4d24-a3f4-1d00ee82b28a" />
+<img width="1385" height="256" alt="image" src="https://github.com/user-attachments/assets/3b280760-47b2-4ead-81ce-cb93b261dc1a" />
+
+</p>
+
+- I saw that there was a "powershell.exe" command under the `InitiatingProcessCommandLine'.
+  
+- I looked under the `RemoteUrl` column and saw an outbound connection to "www.msftconnecttest.com".
+
+- I was able to answer this flag by determining that "www.msftconnecttest.com" was the first outbound destination contacted.
+
+</p>
+
+<img width="639" height="138" alt="image" src="https://github.com/user-attachments/assets/e4d3a054-f9bc-4f91-804e-7946e944736e" />
+
+
 	
 
 
