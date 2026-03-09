@@ -705,14 +705,15 @@ DeviceNetworkEvents
 # Flag 13 - Scheduled Re-Execution Persistence
 [Table of Contents](#table-of-contents)
 
-<img width="648" height="475" alt="image" src="https://github.com/user-attachments/assets/e1b1dd04-64f4-4e69-96e8-66d8803e1e82" />
+<img width="652" height="475" alt="image" src="https://github.com/user-attachments/assets/6aafbb84-b116-4a92-93ef-d799b5b68f8f" />
+
 
 
 
 - The question asks for `task name`
 
 
----------------------------------------------------
+
 ### KQL Query Used
 
 ```
