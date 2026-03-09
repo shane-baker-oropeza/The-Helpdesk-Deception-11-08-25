@@ -520,9 +520,7 @@ DeviceProcessEvents
 
 - I continued to search under the `DeviceProcessEvents` table, but I added a couple of query strings to narrow it down.
 
-- I added the `FileName` contains "who" and I also wanted the query to project the `InitiatingProcessCreationTime` column.
-
-- The `FileName` that was generated was `whoami.exe`.
+- I added the `ProcessCommandLine` contains "who".
 
 - I then proceeded to the specific time of the very first attempt and found the timestamp of `2025-10-09T12:52:14.3135459Z`.
 
@@ -539,7 +537,7 @@ DeviceProcessEvents
 | where TimeGenerated between (datetime(2025-10-09 12:50) .. datetime(2025-10-15 13:00))
 | where DeviceName == "gab-intern-vm"
 | where AccountName == "g4bri3lintern"
-| where FileName contains "who"
+| where ProcessCommandLine contains "who"
 | project TimeGenerated, DeviceName, AccountName, ActionType, FileName, FolderPath, ProcessCommandLine, InitiatingProcessCommandLine, InitiatingProcessFileName, InitiatingProcessCreationTime
 | order by TimeGenerated desc
 ```
