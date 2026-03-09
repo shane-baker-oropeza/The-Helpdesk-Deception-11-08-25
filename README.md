@@ -645,6 +645,8 @@ DeviceFileEvents
 
 ---------------------------------------------------
 
+<summary id="-flag-12">🚩 <strong>Flag 12: <Technique Name></strong></summary>
+
 # Flag 12 - Outbound Transfer Attempt 
 [Table of Contents](#table-of-contents)
 
@@ -675,6 +677,8 @@ DeviceNetworkEvents
 
 
 ---------------------------------------------------
+
+<summary id="-flag-13">🚩 <strong>Flag 13: <Technique Name></strong></summary>
 
 # Flag 13 - Scheduled Re-Execution Persistence
 [Table of Contents](#table-of-contents)
@@ -710,6 +714,8 @@ DeviceProcessEvents
 
 ---------------------------------------------------
 
+<summary id="-flag-14">🚩 <strong>Flag 14: <Technique Name></strong></summary>
+
 # Flag 14 - Autorun Fallback Persistence
 [Table of Contents](#table-of-contents)
 
@@ -720,6 +726,8 @@ DeviceProcessEvents
 
 
 ---------------------------------------------------
+
+<summary id="-flag-15">🚩 <strong>Flag 15: <Technique Name></strong></summary>
 
 # Flag 15 - Planted Narrative / Cover Artifact
 [Table of Contents](#table-of-contents)
