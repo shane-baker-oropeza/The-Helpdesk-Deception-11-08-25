@@ -61,7 +61,6 @@ The evidence is here. The question is whether you’ll see through the story or 
 - [🧬 MITRE ATT&CK Summary](#-mitre-attck-summary)
 - [🚨 Detection Gaps & Recommendations](#-detection-gaps--recommendations)
 - [🧾 Final Assessment](#-final-assessment)
-- [📎 Analyst Notes](#-analyst-notes)
 
 ---
 
