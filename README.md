@@ -858,9 +858,9 @@ DeviceFileEvents
 
 
 ---------------------------------------------------
----
 
 ## 🚨 Detection Gaps & Recommendations
+[Table of Contents](#table-of-contents)
 
 ### Observed Gaps
 - I need to start broad and then narrow down.  If you start too narrow, you can miss important clues.
