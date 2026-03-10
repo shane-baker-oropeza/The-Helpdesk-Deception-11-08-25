@@ -899,9 +899,3 @@ And every step was traceable using **Log Analytics KQL**, primarily through:
 
 ---------------------------------------------------
 
-
-
-- Evidence reproducible via advanced hunting  
-- Techniques mapped directly to MITRE ATT&CK  
-
----
