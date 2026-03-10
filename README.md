@@ -913,20 +913,24 @@ DeviceFileEvents
 
 ## 🧾 Final Assessment
 
-<Concise executive-style conclusion summarizing risk, attacker sophistication, and defensive posture.>
+# Final Notes / Findings
+[Table of Contents](#table-of-contents)
 
----
+This incident simulated a realistic multi-stage intrusion:
 
-## 📎 Analyst Notes
+- Initial foothold
+- Reconnaissance
+- Privilege assessment
+- Local staging
+- Persistence
+- Attempted exfiltration
+- Narrative manipulation
 
-- Report structured for interview and portfolio review
+And every step was traceable using **Log Analytics KQL**, primarily through:
 
-
-
-
-
-
-
+- `DeviceProcessEvents`
+- `DeviceFileEvents`
+- `DeviceNetworkEvents`
 
 
 
