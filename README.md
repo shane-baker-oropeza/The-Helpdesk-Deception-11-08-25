@@ -772,17 +772,13 @@ DeviceProcessEvents
 
 
 
+- I started my search in the `DeviceFileEvents` table since I was looking for explanatory files or user-facing artifacts.
 
-- The actor **left a cover story behind**, and the hint gives it away:
+- I kept my query search time around the time of the original event and added 5 minutes `TimeGenerated between (datetime(2025-10-09 12:50) .. datetime(2025-10-09 13:05))`.
 
-	> **Hint:** The actor opened it for some reason.
+- I was looking for a file that was created for the artifact to be left behind, so I added the query string `| where ActionType == "FileCreated"`.
 
-- That means we’re hunting for a file the attacker **manually opened**, likely something meant to _explain_ or _justify_ what they were doing. 
-
-- The attacker delivered `SupportTool.ps1` to the victim’s Downloads folder and then executed it via the Windows shell, causing Explorer to create `SupportTool.lnk` in the Recent items directory.
-
-- This ties the script to an interactive session (likely the `g4bri3Intern` profile) and demonstrates user-level execution (MITRE ATT&CK T1204 – User Execution).
-
+</p>
 
 ---------------------------------------------------
 ### KQL Query Used
@@ -790,14 +786,31 @@ DeviceProcessEvents
 ```
 //---------------FLAG 15-----------------------
 DeviceFileEvents
+| where TimeGenerated between (datetime(2025-10-09 12:50) .. datetime(2025-10-09 13:05))
 | where DeviceName == "gab-intern-vm"
-| where FileName contains "Support"
-| where TimeGenerated between (datetime(2025-10-09T11:58:00Z) .. datetime(2025-10-09T13:03:59Z))
-| project TimeGenerated, ActionType, DeviceName, FileName, FolderPath, InitiatingProcessCommandLine, InitiatingProcessFileName, InitiatingProcessFolderPath
-| order by TimeGenerated asc
+| where InitiatingProcessAccountName == "g4bri3lintern"
+| where ActionType == "FileCreated"
+| project TimeGenerated, ActionType, DeviceName, InitiatingProcessAccountName, InitiatingProcessFileName, FileName, FolderPath
+| order by TimeGenerated desc
 ```
 
-<img width="808" height="559" alt="image" src="https://github.com/user-attachments/assets/427a3960-63ed-4958-b1f7-79eacb384ac1" />
+</p>
+
+<img width="1709" height="379" alt="image" src="https://github.com/user-attachments/assets/5077389c-897b-482e-8982-3681ada6a3cc" />
+
+
+</p>
+
+- I saw that there was a `FileName` of `SupportChat_log.lnk` created at `2025-10-09T13:02:41.5698148Z`.
+
+- I used the filename of `SupportChat_log.lnk` to answer the flag.
+
+</p>
+
+<img width="642" height="142" alt="image" src="https://github.com/user-attachments/assets/f7c9f23b-932f-4895-a980-1d0da25f17fc" />
+
+
+</p>
 
 ---------------------------------------------------
 
@@ -835,9 +848,6 @@ DeviceFileEvents
 
 </details>
 
----
-
-<!-- Duplicate Flag 1 section for Flags 2–20 -->
 
 ---
 
