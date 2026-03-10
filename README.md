@@ -780,7 +780,7 @@ DeviceProcessEvents
 
 </p>
 
----------------------------------------------------
+
 ### KQL Query Used
 
 ```
@@ -900,9 +900,9 @@ DeviceFileEvents
 ## 🚨 Detection Gaps & Recommendations
 
 ### Observed Gaps
-- <Placeholder>
-- <Placeholder>
-- <Placeholder>
+- I need to start broad and then narrow down.  If you start too narrow, you can miss important clues.
+- I found that when I copied the text from the logs and pasted it for the flag answer, it would not work.  I had to type the answer manually.
+- Each table has different columns that are displayed.  Learn the difference between `InitiatingProcessAccountName` and `AccountName` when searching different tables.
 
 ### Recommendations
 - <Placeholder>
